@@ -9,21 +9,21 @@
 /* Begin PBXBuildFile section */
 		819A91562B7726E700C69888 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 819A91552B7726E700C69888 /* AppDelegate.swift */; };
 		819A91582B7726E700C69888 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 819A91572B7726E700C69888 /* SceneDelegate.swift */; };
-		819A915A2B7726E700C69888 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 819A91592B7726E700C69888 /* ViewController.swift */; };
 		819A915D2B7726E700C69888 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 819A915B2B7726E700C69888 /* Main.storyboard */; };
 		819A915F2B7726E800C69888 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 819A915E2B7726E800C69888 /* Assets.xcassets */; };
 		819A91622B7726E800C69888 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 819A91602B7726E800C69888 /* LaunchScreen.storyboard */; };
+		819A91712B7728DF00C69888 /* LoginController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 819A91702B7728DF00C69888 /* LoginController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		819A91522B7726E700C69888 /* MyUber.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MyUber.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		819A91552B7726E700C69888 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		819A91572B7726E700C69888 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		819A91592B7726E700C69888 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		819A915C2B7726E700C69888 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		819A915E2B7726E800C69888 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		819A91612B7726E800C69888 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		819A91632B7726E800C69888 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		819A91702B7728DF00C69888 /* LoginController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -56,15 +56,71 @@
 		819A91542B7726E700C69888 /* MyUber */ = {
 			isa = PBXGroup;
 			children = (
-				819A91552B7726E700C69888 /* AppDelegate.swift */,
-				819A91572B7726E700C69888 /* SceneDelegate.swift */,
-				819A91592B7726E700C69888 /* ViewController.swift */,
+				819A916A2B77279B00C69888 /* Application */,
+				819A916F2B77283900C69888 /* Model */,
+				819A916E2B77283400C69888 /* View */,
+				819A916D2B77283200C69888 /* Controller */,
+				819A916C2B77282F00C69888 /* Service */,
+				819A916B2B77282800C69888 /* Utils */,
+				819A91692B77277600C69888 /* Supporting Files */,
+			);
+			path = MyUber;
+			sourceTree = "<group>";
+		};
+		819A91692B77277600C69888 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
 				819A915B2B7726E700C69888 /* Main.storyboard */,
 				819A915E2B7726E800C69888 /* Assets.xcassets */,
 				819A91602B7726E800C69888 /* LaunchScreen.storyboard */,
 				819A91632B7726E800C69888 /* Info.plist */,
 			);
-			path = MyUber;
+			path = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		819A916A2B77279B00C69888 /* Application */ = {
+			isa = PBXGroup;
+			children = (
+				819A91552B7726E700C69888 /* AppDelegate.swift */,
+				819A91572B7726E700C69888 /* SceneDelegate.swift */,
+			);
+			path = Application;
+			sourceTree = "<group>";
+		};
+		819A916B2B77282800C69888 /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Utils;
+			sourceTree = "<group>";
+		};
+		819A916C2B77282F00C69888 /* Service */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Service;
+			sourceTree = "<group>";
+		};
+		819A916D2B77283200C69888 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				819A91702B7728DF00C69888 /* LoginController.swift */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		819A916E2B77283400C69888 /* View */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		819A916F2B77283900C69888 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Model;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -138,7 +194,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				819A915A2B7726E700C69888 /* ViewController.swift in Sources */,
+				819A91712B7728DF00C69888 /* LoginController.swift in Sources */,
 				819A91562B7726E700C69888 /* AppDelegate.swift in Sources */,
 				819A91582B7726E700C69888 /* SceneDelegate.swift in Sources */,
 			);
@@ -294,7 +350,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 4CJW76Y9FL;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = MyUber/Info.plist;
+				INFOPLIST_FILE = "MyUber/Supporting Files/Info.plist";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
@@ -322,7 +378,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 4CJW76Y9FL;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = MyUber/Info.plist;
+				INFOPLIST_FILE = "MyUber/Supporting Files/Info.plist";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;

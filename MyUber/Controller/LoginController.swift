@@ -1,5 +1,5 @@
 //
-//  ViewController.swift
+//  LoginController.swift
 //  MyUber
 //
 //  Created by SAHIL AMRUT AGASHE on 10/02/24.
@@ -7,13 +7,10 @@
 
 import UIKit
 
-class ViewController: UIViewController {
-
+class LoginController: UIViewController {
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
+        view.backgroundColor = .cyan
     }
-
-
 }
-

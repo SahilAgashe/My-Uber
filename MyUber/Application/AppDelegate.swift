@@ -9,11 +9,16 @@ import UIKit
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
-
-
+    
+    var window: UIWindow?
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
+        
+        // Before iOS 13 , when there is no concept of UIWindowScene, just initialize window object directly without windowScene!
+//        window = UIWindow()
+//        window?.rootViewController = LoginController()
+//        window?.makeKeyAndVisible()
         return true
     }
 
