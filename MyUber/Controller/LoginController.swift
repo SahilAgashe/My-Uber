@@ -20,38 +20,29 @@ class LoginController: UIViewController {
     }()
     
     private lazy var emailContainerView: UIView = {
-        let view = UIView()
-        
-        let imageView = UIImageView()
-        imageView.image = UIImage(named: "ic_mail_outline_white_2x")
-        imageView.alpha = 0.87
-        view.addSubview(imageView)
-        imageView.centerY(inView: view)
-        imageView.anchor(left: view.leftAnchor, paddingLeft: 8, width: 24, height: 24)
-        
-        view.addSubview(emailTextField)
-        emailTextField.centerY(inView: view)
-        emailTextField.anchor(left: imageView.rightAnchor, bottom: view.bottomAnchor, 
-                              right: view.rightAnchor, paddingLeft: 8, paddingBottom: 8)
-        
-        let separatorView = UIView()
-        separatorView.backgroundColor = .lightGray
-        view.addSubview(separatorView)
-        separatorView.anchor(left: view.leftAnchor, bottom: view.bottomAnchor,
-                             right: view.rightAnchor, paddingLeft: 8, height: 0.75)
-        
+        let mailImg = UIImage(named: "ic_mail_outline_white_2x") ?? UIImage()
+        let view = UIView.inputContainerView(image: mailImg, textField: emailTextField)
+        view.heightAnchor.constraint(equalToConstant: 50).isActive = true
+        return view
+    }()
+    
+    private lazy var passwordContainerView: UIView = {
+        let lockImg = UIImage(named: "ic_lock_outline_white_2x") ?? UIImage()
+        let view = UIView.inputContainerView(image: lockImg, textField: passwordTextField)
+        view.heightAnchor.constraint(equalToConstant: 50).isActive = true
         return view
     }()
     
     private let emailTextField: UITextField = {
-        let tf = UITextField()
-        tf.borderStyle = .none
-        tf.font = .systemFont(ofSize: 16)
-        tf.textColor = .white
-        tf.keyboardAppearance = .dark
-        tf.attributedPlaceholder = NSAttributedString(string: "Email", attributes: [.foregroundColor : UIColor.lightGray])
-        return tf
+        UITextField.textField(withPlaceholder: "Email",
+                              isSecureTextEntry: false)
     }()
+    
+    private let passwordTextField: UITextField = {
+        UITextField.textField(withPlaceholder: "Password",
+                              isSecureTextEntry: true)
+    }()
+
     
     // MARK: - Lifecycle
     
@@ -63,15 +54,18 @@ class LoginController: UIViewController {
         titleLabel.centerX(inView: view)
         titleLabel.anchor(top: view.safeAreaLayoutGuide.topAnchor)
         
-        view.addSubview(emailContainerView)
-        emailContainerView.anchor(top: titleLabel.bottomAnchor, left: view.leftAnchor, right: view.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingRight: 0 ,height: 50)
+        let stack = UIStackView(arrangedSubviews: [emailContainerView, passwordContainerView])
+        stack.axis = .vertical
+        stack.distribution = .fillEqually
+        stack.spacing = 16
         
-        
+        view.addSubview(stack)
+        stack.anchor(top: titleLabel.bottomAnchor, left: view.leftAnchor,
+                     right: view.rightAnchor, paddingTop: 40, paddingLeft: 16, paddingRight: 16)
     }
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
         .lightContent
     }
-    
-    
+
 }
