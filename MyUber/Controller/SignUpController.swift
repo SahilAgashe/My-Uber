@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Firebase
 
 class SignUpController: UIViewController {
     
@@ -70,10 +71,11 @@ class SignUpController: UIViewController {
         return sc
     }()
     
-    private let signUpButton: AuthButton = {
+    private lazy var signUpButton: AuthButton = {
         let button = AuthButton(type: .system)
         button.setTitle("Sign Up", for: .normal)
         button.titleLabel?.font = .boldSystemFont(ofSize: 20)
+        button.addTarget(self, action: #selector(handleSignUp), for: .touchUpInside)
         return button
     }()
     
@@ -101,6 +103,41 @@ class SignUpController: UIViewController {
     
     
     // MARK: - Selectors
+    
+    @objc private func handleSignUp() {
+        print("DEBUG SignUpController: \(#function)")
+        
+        guard let email = emailTextField.text,
+              let password = passwordTextField.text,
+              let fullname = fullnameTextField.text
+        else {
+            print("DEBUG SignUpController: guard let error in \(#function)")
+            return
+        }
+        
+        let accountTypeIndex = accountTypeSegmentedControl.selectedSegmentIndex
+        
+        Auth.auth().createUser(withEmail: email, password: password) { (result: AuthDataResult?, error: Error?) in
+            if let error {
+                print("DEBUG SignUpController: Error while creating user: \(error)")
+                return
+            }
+            
+            guard let uid = result?.user.uid else { return }
+            
+            let values = ["email": email,
+                          "fullname:": fullname,
+                          "accountType": accountTypeIndex] as [String : Any]
+            
+            Database.database().reference().child("users").child(uid).updateChildValues(values) { (error: Error?, reference: DatabaseReference) in
+                if let error {
+                    print("DEBUG SignUpController: Error while saving user data in database: \(error)")
+                    return
+                }
+                print("DEBUG SignUpController: Successfully registered and saved user-data!")
+            }
+        }
+    }
     
     @objc private func handleShowLogin() {
         navigationController?.popViewController(animated: true)

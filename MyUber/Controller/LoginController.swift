@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Firebase
 
 class LoginController: UIViewController {
     
@@ -43,10 +44,11 @@ class LoginController: UIViewController {
                               isSecureTextEntry: true)
     }()
     
-    private let loginButton: AuthButton = {
+    private lazy var loginButton: AuthButton = {
         let button = AuthButton(type: .system)
         button.setTitle("Log In", for: .normal)
         button.titleLabel?.font = .boldSystemFont(ofSize: 20)
+        button.addTarget(self, action: #selector(handleLogin), for: .touchUpInside)
         return button
     }()
 
@@ -76,6 +78,26 @@ class LoginController: UIViewController {
 //    }
     
     // MARK: - Selectors
+    
+    @objc private func handleLogin() {
+        print("DEBUG LoginController: \(#function)")
+        
+        guard let email = emailTextField.text,
+              let password = passwordTextField.text else {
+            print("DEBUG LoginController: guard let error in \(#function)")
+            return
+        }
+        
+        Auth.auth().signIn(withEmail: email, password: password) { (result: AuthDataResult?, error: Error?) in
+            if let error {
+                print("DEBUG LoginController: Failed to log user in with error: \(error.localizedDescription)")
+                return
+            }
+             
+            print("DEBUG LoginController: Successfully logged user in...")
+        }
+        
+    }
     
     @objc private func handleShowSignUP() {
         let controller = SignUpController()
