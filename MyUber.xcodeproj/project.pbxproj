@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		812A66AF2B7B11B000692E85 /* SignUpController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 812A66AE2B7B11B000692E85 /* SignUpController.swift */; };
+		8183AFED2B7BD4EF00B7AC57 /* AuthButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8183AFEC2B7BD4EF00B7AC57 /* AuthButton.swift */; };
 		819A91562B7726E700C69888 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 819A91552B7726E700C69888 /* AppDelegate.swift */; };
 		819A91582B7726E700C69888 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 819A91572B7726E700C69888 /* SceneDelegate.swift */; };
 		819A915D2B7726E700C69888 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 819A915B2B7726E700C69888 /* Main.storyboard */; };
@@ -17,6 +19,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		812A66AE2B7B11B000692E85 /* SignUpController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpController.swift; sourceTree = "<group>"; };
+		8183AFEC2B7BD4EF00B7AC57 /* AuthButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthButton.swift; sourceTree = "<group>"; };
 		819A91522B7726E700C69888 /* MyUber.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MyUber.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		819A91552B7726E700C69888 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		819A91572B7726E700C69888 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -108,6 +112,7 @@
 			isa = PBXGroup;
 			children = (
 				819A91702B7728DF00C69888 /* LoginController.swift */,
+				812A66AE2B7B11B000692E85 /* SignUpController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -115,6 +120,7 @@
 		819A916E2B77283400C69888 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				8183AFEC2B7BD4EF00B7AC57 /* AuthButton.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -197,6 +203,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				812A66AF2B7B11B000692E85 /* SignUpController.swift in Sources */,
+				8183AFED2B7BD4EF00B7AC57 /* AuthButton.swift in Sources */,
 				819A91712B7728DF00C69888 /* LoginController.swift in Sources */,
 				819A91562B7726E700C69888 /* AppDelegate.swift in Sources */,
 				819A91582B7726E700C69888 /* SceneDelegate.swift in Sources */,
@@ -360,6 +368,7 @@
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -388,6 +397,7 @@
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
