@@ -7,24 +7,24 @@
 
 import UIKit
 import Firebase
+import MapKit
 
 private let kDebugHomeController = "DEBUG HomeController"
 class HomeController: UIViewController {
     
     // MARK: - Properties
     
+    private let mapView = MKMapView()
+    
     // MARK: - Lifecycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         checkIfUserIsLoggedIn()
-        signOut()
-        view.backgroundColor = .systemYellow
     }
     
-    // MARK: - Helpers
-    
+    // MARK: - API
+
     private func checkIfUserIsLoggedIn() {
         if Auth.auth().currentUser?.uid == nil {
             print("\(kDebugHomeController): current thread is \(Thread.isMainThread)")
@@ -36,6 +36,7 @@ class HomeController: UIViewController {
             }
         } else {
             print("\(kDebugHomeController): Logged User UID => \(Auth.auth().currentUser?.uid ?? "")")
+            configureUI()
         }
     }
     
@@ -45,5 +46,12 @@ class HomeController: UIViewController {
         } catch {
             print("\(kDebugHomeController): Error while signing out!")
         }
+    }
+    
+    // MARK: - Helpers
+    
+    public func configureUI() {
+        mapView.frame = view.frame
+        view.addSubview(mapView)
     }
 }

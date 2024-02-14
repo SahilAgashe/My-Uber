@@ -93,9 +93,17 @@ class LoginController: UIViewController {
                 print("DEBUG LoginController: Failed to log user in with error: \(error.localizedDescription)")
                 return
             }
-             
-            self?.dismiss(animated: true)
             print("DEBUG LoginController: Successfully logged user in...")
+            
+            /// Deprecated: Accessing rootViewController
+            /// let homeControllerWithDeprecatedMethod = UIApplication.shared.keyWindow?.rootViewController as? HomeController
+            
+            /// Note:- last window is main keyWindow
+            let homeController = UIApplication.shared.connectedScenes
+                .compactMap({ ($0 as? UIWindowScene)?.keyWindow })
+                .last?.rootViewController as? HomeController
+            homeController?.configureUI()
+            self?.dismiss(animated: true)
         }
         
     }

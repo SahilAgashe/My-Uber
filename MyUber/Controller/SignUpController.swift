@@ -134,9 +134,16 @@ class SignUpController: UIViewController {
                     print("DEBUG SignUpController: Error while saving user data in database: \(error)")
                     return
                 }
-                
-                self?.dismiss(animated: true)
                 print("DEBUG SignUpController: Successfully registered and saved user-data!")
+                
+                /// Deprecated: Accessing rootViewController
+                /// let homeControllerWithDeprecatedMethod = UIApplication.shared.keyWindow?.rootViewController as? HomeController
+                
+                let homeController = UIApplication.shared.connectedScenes
+                    .compactMap({ ($0 as? UIWindowScene)?.keyWindow })
+                    .last?.rootViewController as? HomeController
+                homeController?.configureUI()
+                self?.dismiss(animated: true)
             }
         }
     }
