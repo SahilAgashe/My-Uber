@@ -129,11 +129,13 @@ class SignUpController: UIViewController {
                           "fullname:": fullname,
                           "accountType": accountTypeIndex] as [String : Any]
             
-            Database.database().reference().child("users").child(uid).updateChildValues(values) { (error: Error?, reference: DatabaseReference) in
+            Database.database().reference().child("users").child(uid).updateChildValues(values) { [weak self] (error: Error?, reference: DatabaseReference) in
                 if let error {
                     print("DEBUG SignUpController: Error while saving user data in database: \(error)")
                     return
                 }
+                
+                self?.dismiss(animated: true)
                 print("DEBUG SignUpController: Successfully registered and saved user-data!")
             }
         }

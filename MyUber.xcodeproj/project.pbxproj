@@ -37,6 +37,7 @@
 		8183B0222B7BDDD400B7AC57 /* FirebaseRemoteConfigSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 8183B0212B7BDDD400B7AC57 /* FirebaseRemoteConfigSwift */; };
 		8183B0242B7BDDD400B7AC57 /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = 8183B0232B7BDDD400B7AC57 /* FirebaseStorage */; };
 		8183B0262B7BDDD400B7AC57 /* FirebaseStorageCombine-Community in Frameworks */ = {isa = PBXBuildFile; productRef = 8183B0252B7BDDD400B7AC57 /* FirebaseStorageCombine-Community */; };
+		8183B0282B7BEA2300B7AC57 /* HomeController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8183B0272B7BEA2300B7AC57 /* HomeController.swift */; };
 		819A91562B7726E700C69888 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 819A91552B7726E700C69888 /* AppDelegate.swift */; };
 		819A91582B7726E700C69888 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 819A91572B7726E700C69888 /* SceneDelegate.swift */; };
 		819A915D2B7726E700C69888 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 819A915B2B7726E700C69888 /* Main.storyboard */; };
@@ -50,6 +51,7 @@
 		812A66AE2B7B11B000692E85 /* SignUpController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpController.swift; sourceTree = "<group>"; };
 		8183AFEC2B7BD4EF00B7AC57 /* AuthButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthButton.swift; sourceTree = "<group>"; };
 		8183AFEE2B7BDBF100B7AC57 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		8183B0272B7BEA2300B7AC57 /* HomeController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeController.swift; sourceTree = "<group>"; };
 		819A91522B7726E700C69888 /* MyUber.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MyUber.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		819A91552B7726E700C69888 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		819A91572B7726E700C69888 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -170,6 +172,7 @@
 			children = (
 				819A91702B7728DF00C69888 /* LoginController.swift */,
 				812A66AE2B7B11B000692E85 /* SignUpController.swift */,
+				8183B0272B7BEA2300B7AC57 /* HomeController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -295,6 +298,7 @@
 			files = (
 				812A66AF2B7B11B000692E85 /* SignUpController.swift in Sources */,
 				8183AFED2B7BD4EF00B7AC57 /* AuthButton.swift in Sources */,
+				8183B0282B7BEA2300B7AC57 /* HomeController.swift in Sources */,
 				819A91712B7728DF00C69888 /* LoginController.swift in Sources */,
 				819A91562B7726E700C69888 /* AppDelegate.swift in Sources */,
 				819A91582B7726E700C69888 /* SceneDelegate.swift in Sources */,

@@ -88,12 +88,13 @@ class LoginController: UIViewController {
             return
         }
         
-        Auth.auth().signIn(withEmail: email, password: password) { (result: AuthDataResult?, error: Error?) in
+        Auth.auth().signIn(withEmail: email, password: password) { [weak self] (result: AuthDataResult?, error: Error?) in
             if let error {
                 print("DEBUG LoginController: Failed to log user in with error: \(error.localizedDescription)")
                 return
             }
              
+            self?.dismiss(animated: true)
             print("DEBUG LoginController: Successfully logged user in...")
         }
         
