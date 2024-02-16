@@ -56,15 +56,25 @@ extension UIView {
         centerXAnchor.constraint(equalTo: view.centerXAnchor, constant: constant).isActive = true
     }
     
-    func centerY(inView view: UIView, constant: CGFloat = 0) {
+    func centerY(inView view: UIView, leftAnchor: NSLayoutXAxisAnchor? = nil, paddingLeft: CGFloat = 0, constant: CGFloat = 0) {
         translatesAutoresizingMaskIntoConstraints = false
         centerYAnchor.constraint(equalTo: view.centerYAnchor, constant: constant).isActive = true
+        
+        if let left = leftAnchor {
+            anchor(left: left, paddingLeft: paddingLeft)
+        }
     }
     
     func center(inView view: UIView) {
         translatesAutoresizingMaskIntoConstraints = false
         centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
         centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+    }
+    
+    func setDimensions(height: CGFloat, width: CGFloat) {
+        translatesAutoresizingMaskIntoConstraints = false
+        heightAnchor.constraint(equalToConstant: height).isActive = true
+        widthAnchor.constraint(equalToConstant: width).isActive = true
     }
     
     // inputContainerView having image and textfield
