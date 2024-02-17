@@ -70,9 +70,9 @@ class HomeController: UIViewController {
     }
     
     private func configureMapView() {
-        mapView.frame = view.frame
         view.addSubview(mapView)
-        
+        mapView.anchor(top: view.topAnchor, left: view.leftAnchor,
+                       bottom: view.bottomAnchor,right: view.rightAnchor)
         mapView.showsUserLocation = true
         mapView.userTrackingMode = .follow
     }
