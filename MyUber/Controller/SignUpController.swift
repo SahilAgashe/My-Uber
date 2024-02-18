@@ -7,6 +7,7 @@
 
 import UIKit
 import Firebase
+import GeoFire
 
 class SignUpController: UIViewController {
     
@@ -124,6 +125,8 @@ class SignUpController: UIViewController {
             }
             
             guard let uid = result?.user.uid else { return }
+            
+            let geofire = GeoFire(firebaseRef: DB_REF)
             
             let values = ["email": email,
                           "fullname": fullname,
