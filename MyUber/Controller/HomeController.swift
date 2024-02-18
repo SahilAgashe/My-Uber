@@ -25,15 +25,30 @@ class HomeController: UIViewController {
     
     private let locationInputViewHeight: CGFloat = 200
     
+    private var user: User? {
+        didSet {
+            guard let user else { return }
+            locationInputView.user = user
+        }
+    }
+    
     // MARK: - Lifecycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
         checkIfUserIsLoggedIn()
         enableLocationServices()
+        fetchUserData()
+        //signOut()
     }
     
     // MARK: - API
+    
+    private func fetchUserData() {
+        Service.shared.fetchUserData { [weak self] user in
+            self?.user = user
+        }
+    }
 
     private func checkIfUserIsLoggedIn() {
         if Auth.auth().currentUser?.uid == nil {

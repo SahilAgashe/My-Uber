@@ -126,7 +126,7 @@ class SignUpController: UIViewController {
             guard let uid = result?.user.uid else { return }
             
             let values = ["email": email,
-                          "fullname:": fullname,
+                          "fullname": fullname,
                           "accountType": accountTypeIndex] as [String : Any]
             
             Database.database().reference().child("users").child(uid).updateChildValues(values) { [weak self] (error: Error?, reference: DatabaseReference) in
