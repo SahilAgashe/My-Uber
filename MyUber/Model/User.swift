@@ -5,12 +5,13 @@
 //  Created by SAHIL AMRUT AGASHE on 18/02/24.
 //
 
-import UIKit
+import CoreLocation
 
 struct User {
     let fullname: String
     let email: String
     let accountType: Int
+    var location: CLLocation?
 }
 
 

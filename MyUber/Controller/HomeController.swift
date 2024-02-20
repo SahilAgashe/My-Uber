@@ -39,14 +39,22 @@ class HomeController: UIViewController {
         checkIfUserIsLoggedIn()
         enableLocationServices()
         fetchUserData()
-        signOut()
+        fetchDrivers()
     }
     
     // MARK: - API
     
     private func fetchUserData() {
-        Service.shared.fetchUserData { [weak self] user in
+        guard let currentUid = Auth.auth().currentUser?.uid else { return }
+        Service.shared.fetchUserData(uid: currentUid) { [weak self] user in
             self?.user = user
+        }
+    }
+    
+    private func fetchDrivers() {
+        guard let location = locationManager.location else { return }
+        Service.shared.fetchDrivers(location: location) { (user: User) in
+            print(kDebugHomeController, "Driver fullname => \(user.fullname)")
         }
     }
 
