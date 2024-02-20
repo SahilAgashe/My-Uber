@@ -32,6 +32,7 @@ struct Service {
     func fetchDrivers(location: CLLocation, completion: @escaping(User) -> Void) {
         let geofire = GeoFire(firebaseRef: REF_DRIVER_LOCATIONS)
         
+        // here, observe method used to listen for data changes at a particular location. This is the primary way to read data from the Firebase Database. Your block will be triggered for the initial data and again whenever the data changes.
         REF_DRIVER_LOCATIONS.observe(.value) { (snapshot: DataSnapshot)  in
             geofire.query(at: location, withRadius: 50).observe(.keyEntered) { (uid: String, location: CLLocation) in
                 fetchUserData(uid: uid) { user in
