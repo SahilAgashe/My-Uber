@@ -45,20 +45,27 @@ class HomeController: UIViewController {
     // MARK: - API
     
     private func fetchUserData() {
-        guard let currentUid = Auth.auth().currentUser?.uid else { return }
-        Service.shared.fetchUserData(uid: currentUid) { [weak self] user in
-            self?.user = user
+        DispatchQueue.global(qos: .background).async {
+            guard let currentUid = Auth.auth().currentUser?.uid else { return }
+            Service.shared.fetchUserData(uid: currentUid) { [weak self] user in
+                self?.user = user
+            }
         }
     }
     
     private func fetchDrivers() {
         guard let location = locationManager.location else { return }
-        Service.shared.fetchDrivers(location: location) { [weak self] (driver: User) in
-            print(kDebugHomeController, "Driver fullname => \(driver.fullname)")
-            guard let coordinate = driver.location?.coordinate else { return }
-            let annotation = DriverAnnotation(uid: driver.uid, coordinate: coordinate)
-            
-            self?.mapView.addAnnotation(annotation)
+        
+        DispatchQueue.global(qos: .background).async {
+            Service.shared.fetchDrivers(location: location) { [weak self] (driver: User) in
+                print(kDebugHomeController, "Driver fullname => \(driver.fullname)")
+                guard let coordinate = driver.location?.coordinate else { return }
+                let annotation = DriverAnnotation(uid: driver.uid, coordinate: coordinate)
+                
+                DispatchQueue.main.async {
+                    self?.mapView.addAnnotation(annotation)
+                }
+            }
         }
     }
 
