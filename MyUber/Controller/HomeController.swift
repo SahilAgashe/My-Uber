@@ -17,7 +17,7 @@ class HomeController: UIViewController {
     // MARK: - Properties
     
     private let mapView = MKMapView()
-    private let locationManager = CLLocationManager()
+    private let locationManager = LocationHandler.shared.locationManager
     
     private let inputActivationView = LocationInputActivationView()
     private let locationInputView = LocationInputView()
@@ -39,7 +39,7 @@ class HomeController: UIViewController {
         checkIfUserIsLoggedIn()
         enableLocationServices()
         fetchUserData()
-        //signOut()
+        signOut()
     }
     
     // MARK: - API
@@ -68,6 +68,12 @@ class HomeController: UIViewController {
     private func signOut() {
         do {
             try Auth.auth().signOut()
+            DispatchQueue.main.async { [weak self] in
+                let nav = UINavigationController(rootViewController: LoginController())
+                nav.modalPresentationStyle = .fullScreen
+                nav.modalTransitionStyle = .flipHorizontal
+                self?.present(nav, animated: true)
+            }
         } catch {
             print("\(kDebugHomeController): Error while signing out!")
         }
@@ -157,13 +163,7 @@ extension HomeController: CLLocationManagerDelegate {
         }
     }
     
-    // MARK: - CLLocationManagerDelegate Methods
-    
-    func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
-        if manager.authorizationStatus == .authorizedWhenInUse {
-            manager.requestAlwaysAuthorization()
-        }
-    }
+
     
 }
 

@@ -9,9 +9,12 @@ import UIKit
 import Firebase
 import GeoFire
 
+private let kDebugSignUpController = "DEBUG SignUpController"
 class SignUpController: UIViewController {
     
     // MARK: - Properties
+    
+    private var location = LocationHandler.shared.locationManager.location
     
     private let titleLabel: UILabel = {
         let label = UILabel()
@@ -100,55 +103,47 @@ class SignUpController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         configureUI()
+        
+        print(kDebugSignUpController, "location => \(location)")
     }
     
     
     // MARK: - Selectors
     
     @objc private func handleSignUp() {
-        print("DEBUG SignUpController: \(#function)")
+        print(kDebugSignUpController, #function)
         
         guard let email = emailTextField.text,
               let password = passwordTextField.text,
               let fullname = fullnameTextField.text
         else {
-            print("DEBUG SignUpController: guard let error in \(#function)")
+            print("\(kDebugSignUpController) guard let error in \(#function)")
             return
         }
         
         let accountTypeIndex = accountTypeSegmentedControl.selectedSegmentIndex
         
-        Auth.auth().createUser(withEmail: email, password: password) { (result: AuthDataResult?, error: Error?) in
+        Auth.auth().createUser(withEmail: email, password: password) { [weak self] (result: AuthDataResult?, error: Error?) in
             if let error {
-                print("DEBUG SignUpController: Error while creating user: \(error)")
+                print("\(kDebugSignUpController) Error while creating user: \(error)")
                 return
             }
             
             guard let uid = result?.user.uid else { return }
-            
-            let geofire = GeoFire(firebaseRef: DB_REF)
-            
             let values = ["email": email,
                           "fullname": fullname,
                           "accountType": accountTypeIndex] as [String : Any]
             
-            Database.database().reference().child("users").child(uid).updateChildValues(values) { [weak self] (error: Error?, reference: DatabaseReference) in
-                if let error {
-                    print("DEBUG SignUpController: Error while saving user data in database: \(error)")
-                    return
+            if accountTypeIndex == 1 {
+                let geofire = GeoFire(firebaseRef: REF_DRIVER_LOCATIONS)
+                guard let location = self?.location else { return }
+                
+                geofire.setLocation(location, forKey: uid) { error in
+                    self?.uploadUserDataAndShowHomeController(uid: uid, values: values)
                 }
-                print("DEBUG SignUpController: Successfully registered and saved user-data!")
-                
-                /// Deprecated: Accessing rootViewController
-                /// let homeControllerWithDeprecatedMethod = UIApplication.shared.keyWindow?.rootViewController as? HomeController
-                
-                /// Note:- last scene-key-window is main keyWindow
-                let homeController = UIApplication.shared.connectedScenes
-                    .compactMap({ ($0 as? UIWindowScene)?.keyWindow })
-                    .last?.rootViewController as? HomeController
-                homeController?.configureUI()
-                self?.dismiss(animated: true)
             }
+            
+            self?.uploadUserDataAndShowHomeController(uid: uid, values: values)
         }
     }
     
@@ -182,6 +177,26 @@ class SignUpController: UIViewController {
         alreadyHaveAccountButton.centerX(inView: view)
         alreadyHaveAccountButton.anchor(bottom: view.safeAreaLayoutGuide.bottomAnchor, height: 32)
         
+    }
+    
+    private func uploadUserDataAndShowHomeController(uid: String, values: [String: Any]) {
+        REF_USERS.child(uid).updateChildValues(values) { [weak self] (error: Error?, reference: DatabaseReference) in
+            if let error {
+                print("\(kDebugSignUpController) Error while saving user data in database: \(error)")
+                return
+            }
+            print("\(kDebugSignUpController) Successfully registered and saved user-data!")
+            
+            /// Deprecated: Accessing rootViewController
+            /// let homeControllerWithDeprecatedMethod = UIApplication.shared.keyWindow?.rootViewController as? HomeController
+            
+            /// Note:- last scene-key-window is main keyWindow
+            let homeController = UIApplication.shared.connectedScenes
+                .compactMap({ ($0 as? UIWindowScene)?.keyWindow })
+                .last?.rootViewController as? HomeController
+            homeController?.configureUI()
+            self?.dismiss(animated: true)
+        }
     }
     
 
