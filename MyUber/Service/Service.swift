@@ -16,24 +16,15 @@ private let kDebugService = "DEBUG Service"
 struct Service {
     private init() {}
     static let shared = Service()
-    let currentUid = Auth.auth().currentUser?.uid
     
     func fetchUserData(uid: String, completion: @escaping(User) -> Void) {
-//        guard let currentUid else {
-//            print(kDebugService, "Unable to get current uid!")
-//            return
-//        }
         REF_USERS.child(uid).observeSingleEvent(of: .value) { (snapshot: DataSnapshot) in
             guard let dict = snapshot.value as? [String: Any]
             else {
                 print(kDebugService, "unable to get snapshot value!")
                 return
             }
-            
-            let user = User(dictionary: dict)
-            //print(kDebugService, "email => \(user.email)")
-            //print(kDebugService, "fullname => \(user.fullname)")
-            
+            let user = User(uid: snapshot.key, dictionary: dict)
             completion(user)
         }
     }
@@ -43,7 +34,6 @@ struct Service {
         
         REF_DRIVER_LOCATIONS.observe(.value) { (snapshot: DataSnapshot)  in
             geofire.query(at: location, withRadius: 50).observe(.keyEntered) { (uid: String, location: CLLocation) in
-                //print(kDebugService, "UID => \(uid), location => \(location)")
                 fetchUserData(uid: uid) { user in
                     var driver = user
                     driver.location = location

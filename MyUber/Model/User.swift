@@ -8,6 +8,7 @@
 import CoreLocation
 
 struct User {
+    let uid: String
     let fullname: String
     let email: String
     let accountType: Int
@@ -16,7 +17,8 @@ struct User {
 
 
 extension User {
-    init(dictionary: [String: Any]) {
+    init(uid: String, dictionary: [String: Any]) {
+        self.uid = uid
         fullname = dictionary["fullname"] as? String ?? ""
         email = dictionary["email"] as? String ?? ""
         accountType = dictionary["accountType"] as? Int ?? 0

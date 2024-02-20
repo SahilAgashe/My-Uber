@@ -53,8 +53,12 @@ class HomeController: UIViewController {
     
     private func fetchDrivers() {
         guard let location = locationManager.location else { return }
-        Service.shared.fetchDrivers(location: location) { (user: User) in
-            print(kDebugHomeController, "Driver fullname => \(user.fullname)")
+        Service.shared.fetchDrivers(location: location) { [weak self] (driver: User) in
+            print(kDebugHomeController, "Driver fullname => \(driver.fullname)")
+            guard let coordinate = driver.location?.coordinate else { return }
+            let annotation = DriverAnnotation(uid: driver.uid, coordinate: coordinate)
+            
+            self?.mapView.addAnnotation(annotation)
         }
     }
 
