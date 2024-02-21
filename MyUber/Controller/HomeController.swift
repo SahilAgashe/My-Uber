@@ -59,12 +59,27 @@ class HomeController: UIViewController {
         
         DispatchQueue.global(qos: .background).async {
             Service.shared.fetchDrivers(location: location) { [weak self] (driver: User) in
-                print(kDebugHomeController, "Driver fullname => \(driver.fullname)")
+                //print(kDebugHomeController, "Driver fullname => \(driver.fullname)")
                 guard let coordinate = driver.location?.coordinate else { return }
                 let annotation = DriverAnnotation(uid: driver.uid, coordinate: coordinate)
                 
-                DispatchQueue.main.async {
-                    self?.mapView.addAnnotation(annotation)
+                var driverIsVisible: Bool {
+                    return self?.mapView.annotations.contains { annotation in
+                        guard let driverAnnotation = annotation as? DriverAnnotation else { return false}
+                        if driverAnnotation.uid == driver.uid {
+                            print(kDebugHomeController, "Position updated for driver => \(driver.fullname)")
+                            driverAnnotation.updateAnnotationPosition(withCoordinate: coordinate)
+                            return true
+                        }
+                        return false
+                    } ?? false
+                }
+                
+                if !driverIsVisible {
+                    DispatchQueue.main.async {
+                        print(kDebugHomeController, "Annotation added for driver => \(driver.fullname)")
+                        self?.mapView.addAnnotation(annotation)
+                    }
                 }
             }
         }
@@ -159,7 +174,7 @@ class HomeController: UIViewController {
     }
 }
 
-// MARK: -
+// MARK: - MKMapViewDelegate
 extension HomeController: MKMapViewDelegate {
     func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
         if let annotation = annotation as? DriverAnnotation {

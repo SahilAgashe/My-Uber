@@ -15,4 +15,10 @@ class DriverAnnotation: NSObject, MKAnnotation {
         self.uid = uid
         self.coordinate = coordinate
     }
+    
+    func updateAnnotationPosition(withCoordinate coordinate: CLLocationCoordinate2D) {
+        UIView.animate(withDuration: 0.2) {
+            self.coordinate = coordinate
+        }
+    }
 }
