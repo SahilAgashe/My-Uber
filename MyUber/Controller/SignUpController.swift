@@ -194,7 +194,7 @@ class SignUpController: UIViewController {
             let homeController = UIApplication.shared.connectedScenes
                 .compactMap({ ($0 as? UIWindowScene)?.keyWindow })
                 .last?.rootViewController as? HomeController
-            homeController?.configureUI()
+            homeController?.configure()
             self?.dismiss(animated: true)
         }
     }

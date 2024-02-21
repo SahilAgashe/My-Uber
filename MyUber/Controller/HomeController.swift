@@ -39,47 +39,40 @@ class HomeController: UIViewController {
         super.viewDidLoad()
         checkIfUserIsLoggedIn()
         enableLocationServices()
-        fetchUserData()
-        fetchDrivers()
     }
     
     // MARK: - API
     
     private func fetchUserData() {
-        DispatchQueue.global(qos: .background).async {
-            guard let currentUid = Auth.auth().currentUser?.uid else { return }
-            Service.shared.fetchUserData(uid: currentUid) { [weak self] user in
-                self?.user = user
-            }
+        guard let currentUid = Auth.auth().currentUser?.uid else { return }
+        Service.shared.fetchUserData(uid: currentUid) { [weak self] user in
+            self?.user = user
         }
     }
     
     private func fetchDrivers() {
         guard let location = locationManager.location else { return }
-        
-        DispatchQueue.global(qos: .background).async {
-            Service.shared.fetchDrivers(location: location) { [weak self] (driver: User) in
-                //print(kDebugHomeController, "Driver fullname => \(driver.fullname)")
-                guard let coordinate = driver.location?.coordinate else { return }
-                let annotation = DriverAnnotation(uid: driver.uid, coordinate: coordinate)
-                
-                var driverIsVisible: Bool {
-                    return self?.mapView.annotations.contains { annotation in
-                        guard let driverAnnotation = annotation as? DriverAnnotation else { return false}
-                        if driverAnnotation.uid == driver.uid {
-                            print(kDebugHomeController, "Position updated for driver => \(driver.fullname)")
-                            driverAnnotation.updateAnnotationPosition(withCoordinate: coordinate)
-                            return true
-                        }
-                        return false
-                    } ?? false
-                }
-                
-                if !driverIsVisible {
-                    DispatchQueue.main.async {
-                        print(kDebugHomeController, "Annotation added for driver => \(driver.fullname)")
-                        self?.mapView.addAnnotation(annotation)
+        Service.shared.fetchDrivers(location: location) { [weak self] (driver: User) in
+            //print(kDebugHomeController, "Driver fullname => \(driver.fullname)")
+            guard let coordinate = driver.location?.coordinate else { return }
+            let annotation = DriverAnnotation(uid: driver.uid, coordinate: coordinate)
+            
+            var driverIsVisible: Bool {
+                return self?.mapView.annotations.contains { annotation in
+                    guard let driverAnnotation = annotation as? DriverAnnotation else { return false}
+                    if driverAnnotation.uid == driver.uid {
+                        print(kDebugHomeController, "Position updated for driver => \(driver.fullname)")
+                        driverAnnotation.updateAnnotationPosition(withCoordinate: coordinate)
+                        return true
                     }
+                    return false
+                } ?? false
+            }
+            
+            if !driverIsVisible {
+                DispatchQueue.main.async {
+                    print(kDebugHomeController, "Annotation added for driver => \(driver.fullname)")
+                    self?.mapView.addAnnotation(annotation)
                 }
             }
         }
@@ -96,7 +89,7 @@ class HomeController: UIViewController {
             }
         } else {
             print("\(kDebugHomeController): Logged User UID => \(Auth.auth().currentUser?.uid ?? "")")
-            configureUI()
+            configure()
         }
     }
     
@@ -116,7 +109,15 @@ class HomeController: UIViewController {
     
     // MARK: - Helpers
     
-    public func configureUI() {
+    public func configure() {
+        configureUI()
+        DispatchQueue.global(qos: .background).async { [weak self] in
+            self?.fetchUserData()
+            self?.fetchDrivers()
+        }
+    }
+    
+    private func configureUI() {
         configureMapView()
         
         view.addSubview(inputActivationView)

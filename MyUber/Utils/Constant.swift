@@ -10,6 +10,7 @@ import MapKit
 let Bhandara = getMKPointAnnotation(latitude: 21.170000, longitude: 79.650002)
 let Tumsar = getMKPointAnnotation(latitude: 21.37420654296875, longitude: 79.73873325096474)
 let Mohadi = getMKPointAnnotation(latitude: 21.3088, longitude: 79.6755)
+let Warthi = getMKPointAnnotation(latitude: 21.2378, longitude: 79.6445)
 let Nagpur = getMKPointAnnotation(latitude: 21.146633, longitude: 79.088860)
 let Gondia = getMKPointAnnotation(latitude: 21.4624491, longitude: 80.22097729999996)
 let Wardha = getMKPointAnnotation(latitude: 20.73542, longitude: 78.59488)
