@@ -23,6 +23,7 @@ class HomeController: UIViewController {
     private let inputActivationView = LocationInputActivationView()
     private let locationInputView = LocationInputView()
     private let tableView = UITableView()
+    private var searchResults = [MKPlacemark]()
     
     private let locationInputViewHeight: CGFloat = 200
     
@@ -175,6 +176,29 @@ class HomeController: UIViewController {
     }
 }
 
+// MARK: - Map Helper Functions
+
+private extension HomeController {
+    func searchBy(naturalLanguageQuery: String, completion: @escaping([MKPlacemark]) -> Void) {
+        var results = [MKPlacemark]()
+        
+        let request = MKLocalSearch.Request()
+        request.region = mapView.region
+        request.naturalLanguageQuery = naturalLanguageQuery
+        
+        let search = MKLocalSearch(request: request)
+        search.start { (response: MKLocalSearch.Response?, error: Error?) in
+            guard let response else {  return }
+            
+            response.mapItems.forEach { (item: MKMapItem) in
+                results.append(item.placemark)
+            }
+            
+            completion(results)
+        }
+    }
+}
+
 // MARK: - MKMapViewDelegate
 extension HomeController: MKMapViewDelegate {
     func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
@@ -228,6 +252,14 @@ extension HomeController: LocationInputActivationViewDelegate {
 
 // MARK: - LocationInputViewDelegate
 extension HomeController: LocationInputViewDelegate {
+    func executeSearch(query: String) {
+        print(kDebugHomeController, "search query is \(query)")
+        searchBy(naturalLanguageQuery: query) { [weak self] (placemarks: [MKPlacemark]) in
+            self?.searchResults = placemarks
+            self?.tableView.reloadData()
+        }
+    }
+    
     func dismissLocationInputView() {
         print(kDebugHomeController, #function)
         
@@ -253,7 +285,7 @@ extension HomeController: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        section == 0 ? 2 : 5
+        section == 0 ? 2 : searchResults.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
