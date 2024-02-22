@@ -6,10 +6,19 @@
 //
 
 import UIKit
+import MapKit
 
+private let kDebugLocationCell = "DEBUG LocationCell"
 class LocationCell: UITableViewCell {
     
     // MARK: - Properties
+    
+    var placemark: MKPlacemark? {
+        didSet {
+            titleLabel.text = placemark?.name
+            addressLabel.text = placemark?.address
+        }
+    }
     
     private let titleLabel: UILabel = {
         let label = UILabel()

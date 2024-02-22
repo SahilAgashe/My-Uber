@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import MapKit
 
 
 // NOTE: - For laying view using auto-layout always need => x, y, width, height
@@ -146,4 +147,17 @@ extension UIColor {
     
     static let backgroundColor = UIColor.rgb(red: 25, green: 25, blue: 25)
     static let mainBlueTint = UIColor.rgb(red: 17, green: 154, blue: 237)
+}
+
+extension MKPlacemark {
+    var address: String {
+        let subThoroughfare = subThoroughfare ?? ""
+        let thoroughfare = thoroughfare ?? ""
+        let subLocality = subLocality ?? ""
+        let locality = locality ?? ""
+        let subAdministrativeArea = subAdministrativeArea ?? ""
+        let administrativeArea = administrativeArea ?? ""
+        
+        return "\(subThoroughfare) \(thoroughfare) \(subLocality) \(locality) \(subAdministrativeArea) \(administrativeArea)"
+    }
 }
