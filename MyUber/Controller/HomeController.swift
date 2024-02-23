@@ -174,6 +174,31 @@ class HomeController: UIViewController {
                                  width: view.frame.width, height: height)
         view.addSubview(tableView)
     }
+    
+    func dismissLocationView(completion: ((Bool) -> Void)? = nil) {
+        print(kDebugHomeController, #function)
+//        UIView.animate(withDuration: 0.3, animations: { [weak self] in
+//            guard let self else { return }
+//            self.locationInputView.alpha = 0
+//            self.tableView.frame.origin.y = self.view.frame.height
+//            self.locationInputView.removeFromSuperview()
+//            UIView.animate(withDuration: 0.5) {
+//                self.inputActivationView.alpha = 1
+//            }
+//        }, completion: completion)
+        
+        UIView.animate(withDuration: 0.3, animations: { [weak self] in
+            guard let self else { return }
+            self.locationInputView.alpha = 0
+            self.tableView.frame.origin.y = self.view.frame.height
+        }) { finished in
+            self.locationInputView.removeFromSuperview()
+            UIView.animate(withDuration: 0.5) {
+                self.inputActivationView.alpha = 1
+            }
+            completion?(finished)
+        }
+    }
 }
 
 // MARK: - Map Helper Functions
@@ -262,17 +287,7 @@ extension HomeController: LocationInputViewDelegate {
     
     func dismissLocationInputView() {
         print(kDebugHomeController, #function)
-        
-        UIView.animate(withDuration: 0.3, animations: { [weak self] in
-            guard let self else { return }
-            self.locationInputView.alpha = 0
-            self.tableView.frame.origin.y = self.view.frame.height
-        }) { [weak self] finished in
-            self?.locationInputView.removeFromSuperview()
-            UIView.animate(withDuration: 0.3) {
-                self?.inputActivationView.alpha = 1
-            }
-        }
+        dismissLocationView()
     }
 
 }
@@ -305,4 +320,13 @@ extension HomeController: UITableViewDataSource {
 // MARK: - UITableViewDelegate
 extension HomeController: UITableViewDelegate {
     
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let selectedPlacemark = searchResults[indexPath.row]
+        dismissLocationView { [weak self] finished in
+            let annotation = MKPointAnnotation()
+            annotation.coordinate = selectedPlacemark.coordinate
+            self?.mapView.addAnnotation(annotation)
+            self?.mapView.selectAnnotation(annotation, animated: true)
+        }
+    }
 }
