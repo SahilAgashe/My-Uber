@@ -6,11 +6,18 @@
 //
 
 import UIKit
+import MapKit
 
 private let kDebugRideActionView = "DEBUG RideActionView"
 class RideActionView: UIView {
-    
     // MARK: - Properties
+    
+    var destination: MKPlacemark? {
+        didSet {
+            titleLabel.text = destination?.name
+            addressLabel.text = destination?.address
+        }
+    }
     
     private let titleLabel: UILabel = {
         let label = UILabel()

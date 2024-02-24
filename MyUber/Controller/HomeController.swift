@@ -251,8 +251,14 @@ class HomeController: UIViewController {
         }, completion: completion)
     }
     
-    private func animateRideActionView(shouldShow: Bool) {
+    private func animateRideActionView(shouldShow: Bool, destination: MKPlacemark? = nil) {
         let yOrigin = shouldShow ? view.frame.height - rideActionViewHeight : view.frame.height
+        
+        if shouldShow {
+            guard let destination else { return }
+            rideActionView.destination = destination
+        }
+        
         UIView.animate(withDuration: 0.3) { [weak self] in
             self?.rideActionView.frame.origin.y = yOrigin
         }
@@ -440,7 +446,7 @@ extension HomeController: UITableViewDelegate {
             let annotations = self.mapView.annotations.filter({ !$0.isKind(of: DriverAnnotation.self)})
             self.mapView.showAnnotations(annotations, animated: true)
             
-            self.animateRideActionView(shouldShow: true)
+            self.animateRideActionView(shouldShow: true, destination: selectedPlacemark)
         }
     }
 }
