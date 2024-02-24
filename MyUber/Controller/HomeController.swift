@@ -70,6 +70,10 @@ class HomeController: UIViewController {
         case .dismissActionView:
             print(kDebugHomeController, "actionButtonConfig => dismiss action view")
             removeAnnotationsAndOverlays()
+            
+            // zoom enough to show all annotations
+            mapView.showAnnotations(mapView.annotations, animated: true)
+            
             UIView.animate(withDuration: 0.3) { [weak self] in
                 self?.inputActivationView.alpha = 1
                 self?.configureActionButton(config: .showMenu)
@@ -303,7 +307,7 @@ extension HomeController: MKMapViewDelegate {
     func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
         if let route {
             let polyline = route.polyline
-            let lineRenderer = MKPolylineRenderer(overlay: polyline)
+            let lineRenderer: MKPolylineRenderer = MKPolylineRenderer(overlay: polyline)
             lineRenderer.strokeColor = .mainBlueTint
             lineRenderer.lineWidth = 4
             return lineRenderer
@@ -409,10 +413,15 @@ extension HomeController: UITableViewDelegate {
         generatePolyline(toDestination: destination)
         
         dismissLocationView { [weak self] finished in
+            guard let self else { return }
             let annotation = MKPointAnnotation()
             annotation.coordinate = selectedPlacemark.coordinate
-            self?.mapView.addAnnotation(annotation)
-            self?.mapView.selectAnnotation(annotation, animated: true)
+            self.mapView.addAnnotation(annotation)
+            self.mapView.selectAnnotation(annotation, animated: true)
+            
+            // zoom enough to show only annotations including MKUserLocation and MKPointAnnotation
+            let annotations = self.mapView.annotations.filter({ !$0.isKind(of: DriverAnnotation.self)})
+            self.mapView.showAnnotations(annotations, animated: true)
         }
     }
 }
