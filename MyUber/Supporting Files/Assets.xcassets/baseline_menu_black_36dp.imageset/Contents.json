@@ -1,11 +1,11 @@
 {
   "images" : [
     {
+      "filename" : "baseline_menu_black_36dp.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "baseline_menu_black_36dp.png",
       "idiom" : "universal",
       "scale" : "2x"
     },

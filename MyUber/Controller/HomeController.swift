@@ -12,6 +12,15 @@ import MapKit
 private let reuseIdentifier = "LocationCell"
 private let annotationIdentifier = "Driver Annotation"
 
+private enum ActionButtonConfiguration {
+    case showMenu
+    case dismissActionView
+    
+    init() {
+        self = .showMenu
+    }
+}
+
 private let kDebugHomeController = "DEBUG HomeController"
 class HomeController: UIViewController {
     
@@ -24,8 +33,8 @@ class HomeController: UIViewController {
     private let locationInputView = LocationInputView()
     private let tableView = UITableView()
     private var searchResults = [MKPlacemark]()
-    
     private let locationInputViewHeight: CGFloat = 200
+    private var actionButtonConfig = ActionButtonConfiguration()
     
     private var user: User? {
         didSet {
@@ -34,12 +43,42 @@ class HomeController: UIViewController {
         }
     }
     
+    private lazy var actionButton: UIButton = {
+        let button = UIButton(type: .system)
+        let menuImg = UIImage(named: "baseline_menu_black_36dp")?.withRenderingMode(.alwaysOriginal)
+        button.setImage(menuImg, for: .normal)
+        button.addTarget(self, action: #selector(actionButtonPressed), for: .touchUpInside)
+        return button
+    }()
+    
     // MARK: - Lifecycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
         checkIfUserIsLoggedIn()
         enableLocationServices()
+    }
+    
+    // MARK: - Selectors
+    
+    @objc private func actionButtonPressed() {
+        print(kDebugHomeController, #function)
+        
+        switch actionButtonConfig {
+        case .showMenu:
+            print(kDebugHomeController, "actionButtonConfig => show menu")
+        case .dismissActionView:
+            print(kDebugHomeController, "actionButtonConfig => dismiss action view")
+            mapView.annotations.forEach { annotation in
+                if let anno = annotation as? MKPointAnnotation {
+                    mapView.removeAnnotation(anno)
+                }
+            }
+            UIView.animate(withDuration: 0.3) { [weak self] in
+                self?.inputActivationView.alpha = 1
+                self?.configureActionButton(config: .showMenu)
+            }
+        }
     }
     
     // MARK: - API
@@ -121,10 +160,14 @@ class HomeController: UIViewController {
     private func configureUI() {
         configureMapView()
         
+        view.addSubview(actionButton)
+        actionButton.anchor(top: view.safeAreaLayoutGuide.topAnchor, left: view.leftAnchor,
+                            paddingTop: 16, paddingLeft: 20, width: 30, height: 30)
+        
         view.addSubview(inputActivationView)
         inputActivationView.centerX(inView: view)
         inputActivationView.setDimensions(height: 50, width: view.frame.width - 64)
-        inputActivationView.anchor(top: view.safeAreaLayoutGuide.topAnchor, paddingTop: 32)
+        inputActivationView.anchor(top: actionButton.bottomAnchor, paddingTop: 32)
         inputActivationView.alpha = 0
         inputActivationView.delegate = self
         
@@ -175,30 +218,29 @@ class HomeController: UIViewController {
         view.addSubview(tableView)
     }
     
-    func dismissLocationView(completion: ((Bool) -> Void)? = nil) {
+    private func configureActionButton(config: ActionButtonConfiguration) {
+        switch config {
+        case .showMenu:
+            let menuImg = UIImage(named: "baseline_menu_black_36dp")?.withRenderingMode(.alwaysOriginal)
+            actionButton.setImage(menuImg, for: .normal)
+            actionButtonConfig = .showMenu
+        case .dismissActionView:
+            let backArrow = UIImage(named: "baseline_arrow_back_black_36dp")?.withRenderingMode(.alwaysOriginal)
+            actionButton.setImage(backArrow, for: .normal)
+            actionButtonConfig = .dismissActionView
+        }
+    }
+    
+    private func dismissLocationView(completion: ((Bool) -> Void)? = nil) {
         print(kDebugHomeController, #function)
-//        UIView.animate(withDuration: 0.3, animations: { [weak self] in
-//            guard let self else { return }
-//            self.locationInputView.alpha = 0
-//            self.tableView.frame.origin.y = self.view.frame.height
-//            self.locationInputView.removeFromSuperview()
-//            UIView.animate(withDuration: 0.5) {
-//                self.inputActivationView.alpha = 1
-//            }
-//        }, completion: completion)
-        
         UIView.animate(withDuration: 0.3, animations: { [weak self] in
             guard let self else { return }
             self.locationInputView.alpha = 0
             self.tableView.frame.origin.y = self.view.frame.height
-        }) { finished in
             self.locationInputView.removeFromSuperview()
-            UIView.animate(withDuration: 0.5) {
-                self.inputActivationView.alpha = 1
-            }
-            completion?(finished)
-        }
+        }, completion: completion)
     }
+    
 }
 
 // MARK: - Map Helper Functions
@@ -287,7 +329,11 @@ extension HomeController: LocationInputViewDelegate {
     
     func dismissLocationInputView() {
         print(kDebugHomeController, #function)
-        dismissLocationView()
+        dismissLocationView { [weak self] _ in
+            UIView.animate(withDuration: 0.5) {
+                self?.inputActivationView.alpha = 1
+            }
+        }
     }
 
 }
@@ -322,6 +368,9 @@ extension HomeController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let selectedPlacemark = searchResults[indexPath.row]
+        
+        configureActionButton(config: .dismissActionView)
+        
         dismissLocationView { [weak self] finished in
             let annotation = MKPointAnnotation()
             annotation.coordinate = selectedPlacemark.coordinate
