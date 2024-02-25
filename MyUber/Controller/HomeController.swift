@@ -40,8 +40,13 @@ class HomeController: UIViewController {
     
     private var user: User? {
         didSet {
-            guard let user else { return }
             locationInputView.user = user
+            if user?.accountType == .passenger {
+                fetchDrivers()
+                configureLocationInputActivationView()
+            } else {
+                print(kDebugHomeController, "User is driver...!")
+            }
         }
     }
     
@@ -93,10 +98,10 @@ class HomeController: UIViewController {
         }
     }
     
+    /// fetch drivers if user-accountType is passenger.
     private func fetchDrivers() {
         guard let location = locationManager.location else { return }
         Service.shared.fetchDrivers(location: location) { [weak self] (driver: User) in
-            //print(kDebugHomeController, "Driver fullname => \(driver.fullname)")
             guard let coordinate = driver.location?.coordinate else { return }
             let annotation = DriverAnnotation(uid: driver.uid, coordinate: coordinate)
             
@@ -156,7 +161,6 @@ class HomeController: UIViewController {
         configureUI()
         DispatchQueue.global(qos: .background).async { [weak self] in
             self?.fetchUserData()
-            self?.fetchDrivers()
         }
     }
     
@@ -168,17 +172,6 @@ class HomeController: UIViewController {
         actionButton.anchor(top: view.safeAreaLayoutGuide.topAnchor, left: view.leftAnchor,
                             paddingTop: 16, paddingLeft: 20, width: 30, height: 30)
         
-        view.addSubview(inputActivationView)
-        inputActivationView.centerX(inView: view)
-        inputActivationView.setDimensions(height: 50, width: view.frame.width - 64)
-        inputActivationView.anchor(top: actionButton.bottomAnchor, paddingTop: 32)
-        inputActivationView.alpha = 0
-        inputActivationView.delegate = self
-        
-        UIView.animate(withDuration: 2) { [weak self] in
-            self?.inputActivationView.alpha = 1
-        }
-        
         configureTableView()
     }
     
@@ -189,6 +182,19 @@ class HomeController: UIViewController {
         mapView.showsUserLocation = true
         mapView.userTrackingMode = .follow
         mapView.delegate = self
+    }
+    
+    private func configureLocationInputActivationView() {
+        view.addSubview(inputActivationView)
+        inputActivationView.centerX(inView: view)
+        inputActivationView.setDimensions(height: 50, width: view.frame.width - 64)
+        inputActivationView.anchor(top: actionButton.bottomAnchor, paddingTop: 32)
+        inputActivationView.alpha = 0
+        inputActivationView.delegate = self
+        
+        UIView.animate(withDuration: 2) { [weak self] in
+            self?.inputActivationView.alpha = 1
+        }
     }
     
     private func configureLocationInputView() {
