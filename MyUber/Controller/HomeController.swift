@@ -46,7 +46,14 @@ class HomeController: UIViewController {
                 configureLocationInputActivationView()
             } else {
                 print(kDebugHomeController, "User is driver...!")
+                observeTrips()
             }
+        }
+    }
+    
+    private var trip: Trip? {
+        didSet {
+            print(kDebugHomeController, "Show pickup passenger controller!")
         }
     }
     
@@ -126,6 +133,12 @@ class HomeController: UIViewController {
         }
     }
 
+    private func observeTrips() {
+        Service.shared.observeTrips { trip in
+            self.trip = trip
+        }
+    }
+    
     private func checkIfUserIsLoggedIn() {
         if Auth.auth().currentUser?.uid == nil {
             print("\(kDebugHomeController): current thread is \(Thread.isMainThread)")
