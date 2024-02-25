@@ -213,6 +213,7 @@ class HomeController: UIViewController {
         view.addSubview(rideActionView)
         rideActionView.frame = CGRect(x: 0, y: view.frame.height,
                                       width: view.frame.width, height: rideActionViewHeight)
+        rideActionView.delegate = self
     }
     
     private func configureTableView() {
@@ -447,6 +448,22 @@ extension HomeController: UITableViewDelegate {
             self.mapView.zoomToFit(annotations: annotations)
             
             self.animateRideActionView(shouldShow: true, destination: selectedPlacemark)
+        }
+    }
+}
+
+extension HomeController: RideActionViewDelegate {
+    func uploadTrip(_ view: RideActionView) {
+        guard let pickupCoordinates = locationManager.location?.coordinate,
+              let destinationCoordinates = view.destination?.coordinate
+        else { return }
+        
+        Service.shared.uploadTrip(pickupCoordinates, destinationCoordinates) { (error: Error?, ref: DatabaseReference) in
+            if let error {
+                print(kDebugHomeController, "Error while uploading trip: \(error.localizedDescription)")
+                return
+            }
+            print(kDebugHomeController, "Trip uploaded successfully!")
         }
     }
 }
