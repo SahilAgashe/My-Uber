@@ -55,6 +55,7 @@ struct Service {
         
         let values = ["pickupCoordinates": pickupArray,
                       "destinationCoordinates": destinationArray]
+        
         REF_TRIPS.child(uid).updateChildValues(values, withCompletionBlock: completion)
     }
 }
