@@ -161,3 +161,18 @@ extension MKPlacemark {
         return "\(subThoroughfare) \(thoroughfare) \(subLocality) \(locality) \(subAdministrativeArea) \(administrativeArea)"
     }
 }
+
+extension MKMapView {
+    func zoomToFit(annotations: [MKAnnotation]) {
+        var zoomRect = MKMapRect.null
+        
+        annotations.forEach { (annotation: MKAnnotation) in
+            let annotationPoint = MKMapPoint(annotation.coordinate)
+            let pointRect = MKMapRect(origin: annotationPoint, size: MKMapSize(width: 0.01, height: 0.01))
+            zoomRect = zoomRect.union(pointRect)
+        }
+        
+        let insets = UIEdgeInsets(top: 100, left: 100, bottom: 250, right: 100)
+        setVisibleMapRect(zoomRect, edgePadding: insets, animated: true)
+    }
+}
