@@ -57,6 +57,7 @@ class PickupController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         configureUI()
+        configureMapView()
     }
     
     // MARK: - Selectors
@@ -72,6 +73,16 @@ class PickupController: UIViewController {
     // MARK: - API
     
     // MARK: - Helpers
+    
+    private func configureMapView() {
+        let region = MKCoordinateRegion(center: trip.pickupCoordinates, latitudinalMeters: 1000, longitudinalMeters: 1000)
+        mapView.setRegion(region, animated: false)
+        
+        let anno = MKPointAnnotation()
+        anno.coordinate = trip.pickupCoordinates
+        mapView.addAnnotation(anno)
+        mapView.selectAnnotation(anno, animated: true)
+    }
     
     private func configureUI() {
         view.backgroundColor = .backgroundColor
