@@ -14,6 +14,7 @@
 		816D5F112B7FD3E2004C25A2 /* LocationInputActivationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 816D5F102B7FD3E2004C25A2 /* LocationInputActivationView.swift */; };
 		816D5F132B7FE615004C25A2 /* LocationInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 816D5F122B7FE615004C25A2 /* LocationInputView.swift */; };
 		817160ED2B8B951200B645B6 /* Trip.swift in Sources */ = {isa = PBXBuildFile; fileRef = 817160EC2B8B951200B645B6 /* Trip.swift */; };
+		817160EF2B8BC05D00B645B6 /* PickupController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 817160EE2B8BC05D00B645B6 /* PickupController.swift */; };
 		8183AFED2B7BD4EF00B7AC57 /* AuthButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8183AFEC2B7BD4EF00B7AC57 /* AuthButton.swift */; };
 		8183AFEF2B7BDBF100B7AC57 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 8183AFEE2B7BDBF100B7AC57 /* GoogleService-Info.plist */; };
 		8183B0282B7BEA2300B7AC57 /* HomeController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8183B0272B7BEA2300B7AC57 /* HomeController.swift */; };
@@ -39,6 +40,7 @@
 		816D5F102B7FD3E2004C25A2 /* LocationInputActivationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationInputActivationView.swift; sourceTree = "<group>"; };
 		816D5F122B7FE615004C25A2 /* LocationInputView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationInputView.swift; sourceTree = "<group>"; };
 		817160EC2B8B951200B645B6 /* Trip.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Trip.swift; sourceTree = "<group>"; };
+		817160EE2B8BC05D00B645B6 /* PickupController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PickupController.swift; sourceTree = "<group>"; };
 		8183AFEC2B7BD4EF00B7AC57 /* AuthButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthButton.swift; sourceTree = "<group>"; };
 		8183AFEE2B7BDBF100B7AC57 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		8183B0272B7BEA2300B7AC57 /* HomeController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeController.swift; sourceTree = "<group>"; };
@@ -157,6 +159,7 @@
 				819A91702B7728DF00C69888 /* LoginController.swift */,
 				812A66AE2B7B11B000692E85 /* SignUpController.swift */,
 				8183B0272B7BEA2300B7AC57 /* HomeController.swift */,
+				817160EE2B8BC05D00B645B6 /* PickupController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -329,6 +332,7 @@
 				819A91582B7726E700C69888 /* SceneDelegate.swift in Sources */,
 				817160ED2B8B951200B645B6 /* Trip.swift in Sources */,
 				819A91732B77A7C000C69888 /* Extension.swift in Sources */,
+				817160EF2B8BC05D00B645B6 /* PickupController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

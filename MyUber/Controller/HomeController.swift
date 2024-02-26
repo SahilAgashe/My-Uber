@@ -54,6 +54,9 @@ class HomeController: UIViewController {
     private var trip: Trip? {
         didSet {
             print(kDebugHomeController, "Show pickup passenger controller!")
+            guard let trip else { return }
+            let controller = PickupController(trip: trip)
+            present(controller, animated: true)
         }
     }
     
