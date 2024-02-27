@@ -57,6 +57,7 @@ struct Service {
                       "destinationCoordinates": destinationArray,
                       "state": TripState.requested.rawValue] as [String : Any]
         
+        /// updateChildValues will update value for key if key already exists, otherwise will create new key-value pair.
         REF_TRIPS.child(uid).updateChildValues(values, withCompletionBlock: completion)
     }
     
@@ -68,6 +69,15 @@ struct Service {
             let trip = Trip(passengerUid: uid, dictionary: dictionary)
             completion(trip)
         }
+    }
+    
+    func acceptTrip(trip: Trip, completion: @escaping(Error?, DatabaseReference) -> Void) {
+        guard let uid = Auth.auth().currentUser?.uid else { return }
+        let values = ["driverUid": uid,
+                      "state": TripState.accepted.rawValue] as [String : Any]
+        
+        /// updateChildValues will update value for key if key already exists in dictionary, otherwise will append new key-value pair in dictionary.
+        REF_TRIPS.child(trip.passengerUid).updateChildValues(values, withCompletionBlock: completion)
     }
 }
 

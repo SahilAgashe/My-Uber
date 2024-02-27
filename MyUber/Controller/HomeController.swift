@@ -56,6 +56,7 @@ class HomeController: UIViewController {
             print(kDebugHomeController, "Show pickup passenger controller!")
             guard let trip else { return }
             let controller = PickupController(trip: trip)
+            controller.delegate = self
             present(controller, animated: true)
         }
     }
@@ -74,6 +75,11 @@ class HomeController: UIViewController {
         super.viewDidLoad()
         checkIfUserIsLoggedIn()
         enableLocationServices()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        print(kDebugHomeController, #function)
     }
     
     // MARK: - Selectors
@@ -474,6 +480,7 @@ extension HomeController: UITableViewDelegate {
     }
 }
 
+// MARK: - RideActionViewDelegate
 extension HomeController: RideActionViewDelegate {
     func uploadTrip(_ view: RideActionView) {
         guard let pickupCoordinates = locationManager.location?.coordinate,
@@ -487,5 +494,14 @@ extension HomeController: RideActionViewDelegate {
             }
             print(kDebugHomeController, "Trip uploaded successfully!")
         }
+    }
+}
+
+// MARK: - PickupControllerDelegate
+extension HomeController: PickupControllerDelegate {
+    func didAcceptTrip(_ trip: Trip) {
+        print(kDebugHomeController, #function)
+        self.trip?.state = .accepted
+        self.dismiss(animated: true)
     }
 }

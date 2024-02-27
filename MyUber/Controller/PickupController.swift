@@ -7,12 +7,18 @@
 
 import UIKit
 import MapKit
+import FirebaseDatabase
+
+protocol PickupControllerDelegate: AnyObject {
+    func didAcceptTrip(_ trip: Trip)
+}
 
 private let kDebugPickupController = "DEBUG PickupController"
 class PickupController: UIViewController {
     
     // MARK: - Properties
     
+    weak var delegate: PickupControllerDelegate?
     private let mapView = MKMapView()
     let trip: Trip
     
@@ -60,10 +66,18 @@ class PickupController: UIViewController {
         configureMapView()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        print(kDebugPickupController, #function)
+    }
+    
     // MARK: - Selectors
     
     @objc private func handleAcceptTrip() {
-        print(kDebugPickupController, #function)
+        Service.shared.acceptTrip(trip: trip) { [weak self ] (error: Error?, ref: DatabaseReference) in
+            guard let self else { return }
+            self.delegate?.didAcceptTrip(self.trip)
+        }
     }
     
     @objc private func handleDismissal() {
