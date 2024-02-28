@@ -487,18 +487,27 @@ extension HomeController: RideActionViewDelegate {
               let destinationCoordinates = view.destination?.coordinate
         else { return }
         
+        shouldPresentLoadingView(true, message: "Finding you a ride..")
+        
         Service.shared.uploadTrip(pickupCoordinates, destinationCoordinates) { (error: Error?, ref: DatabaseReference) in
             if let error {
                 print(kDebugHomeController, "Error while uploading trip: \(error.localizedDescription)")
                 return
             }
             print(kDebugHomeController, "Trip uploaded successfully!")
+            UIView.animate(withDuration: 0.3) { [weak self] in
+                guard let self else { return }
+                self.rideActionView.frame.origin.y = self.view.frame.height
+            }
         }
+        
     }
 }
 
 // MARK: - PickupControllerDelegate
 extension HomeController: PickupControllerDelegate {
+    
+    // TODO: - Clean Code: - We can remove trip parameter!
     func didAcceptTrip(_ trip: Trip) {
         print(kDebugHomeController, #function)
         self.trip?.state = .accepted
