@@ -44,6 +44,7 @@ class HomeController: UIViewController {
             if user?.accountType == .passenger {
                 fetchDrivers()
                 configureLocationInputActivationView()
+                observeCurrentTrip()
             } else {
                 print(kDebugHomeController, "User is driver...!")
                 observeTrips()
@@ -53,11 +54,16 @@ class HomeController: UIViewController {
     
     private var trip: Trip? {
         didSet {
-            print(kDebugHomeController, "Show pickup passenger controller!")
-            guard let trip else { return }
-            let controller = PickupController(trip: trip)
-            controller.delegate = self
-            present(controller, animated: true)
+            guard let user = self.user else { return }
+            if user.accountType == .driver {
+                print(kDebugHomeController, "Show pickup controller!")
+                guard let trip else { return }
+                let controller = PickupController(trip: trip)
+                controller.delegate = self
+                present(controller, animated: true)
+            } else {
+                print(kDebugHomeController, "Show ride action view for accepted trip..")
+            }
         }
     }
     
@@ -106,6 +112,17 @@ class HomeController: UIViewController {
     }
     
     // MARK: - API
+    
+    private func observeCurrentTrip() {
+        Service.shared.observeCurrentTrip { [weak self] trip in
+            self?.trip = trip
+            
+            if trip.state == .accepted {
+                print(kDebugHomeController, "Trip is accepted! Loading view removed!")
+                self?.shouldPresentLoadingView(false)
+            }
+        }
+    }
     
     private func fetchUserData() {
         guard let currentUid = Auth.auth().currentUser?.uid else { return }
