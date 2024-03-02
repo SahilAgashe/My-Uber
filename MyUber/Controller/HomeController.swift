@@ -297,16 +297,19 @@ class HomeController: UIViewController {
         }, completion: completion)
     }
     
-    private func animateRideActionView(shouldShow: Bool, destination: MKPlacemark? = nil) {
+    private func animateRideActionView(shouldShow: Bool, destination: MKPlacemark? = nil, config: RideActionViewConfiguration? = nil) {
         let yOrigin = shouldShow ? view.frame.height - rideActionViewHeight : view.frame.height
-        
-        if shouldShow {
-            guard let destination else { return }
-            rideActionView.destination = destination
-        }
         
         UIView.animate(withDuration: 0.3) { [weak self] in
             self?.rideActionView.frame.origin.y = yOrigin
+        }
+        
+        if shouldShow {
+            guard let config else { return }
+            rideActionView.configureUI(with: config)
+            
+            guard let destination else { return }
+            rideActionView.destination = destination
         }
     }
     
@@ -523,11 +526,22 @@ extension HomeController: RideActionViewDelegate {
 
 // MARK: - PickupControllerDelegate
 extension HomeController: PickupControllerDelegate {
-    
-    // TODO: - Clean Code: - We can remove trip parameter!
     func didAcceptTrip(_ trip: Trip) {
         print(kDebugHomeController, #function)
-        self.trip?.state = .accepted
-        self.dismiss(animated: true)
+
+        let anno = MKPointAnnotation()
+        anno.coordinate = trip.pickupCoordinates
+        mapView.addAnnotation(anno)
+        mapView.selectAnnotation(anno, animated: true)
+        
+        let placemark = MKPlacemark(coordinate: trip.pickupCoordinates)
+        let mapItem = MKMapItem(placemark: placemark)
+        generatePolyline(toDestination: mapItem)
+        
+        mapView.zoomToFit(annotations: mapView.annotations)
+        
+        self.dismiss(animated: true) { [weak self] in
+            self?.animateRideActionView(shouldShow: true, config: .tripAccepted)
+        }
     }
 }
