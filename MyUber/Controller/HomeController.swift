@@ -534,6 +534,20 @@ extension HomeController: RideActionViewDelegate {
         }
         
     }
+    
+    func cancelTrip() {
+        print(kDebugHomeController, "Cancelling trip!")
+        
+        Service.shared.cancelTrip { (error: Error?, ref: DatabaseReference) in
+            if let error {
+                print(kDebugHomeController, "Error cancelling trip...")
+                return
+            }
+            
+            self.animateRideActionView(shouldShow: false)
+            print(kDebugHomeController, "Successfully! Cancelled Trip!")
+        }
+    }
 }
 
 // MARK: - PickupControllerDelegate
