@@ -375,6 +375,14 @@ private extension HomeController {
             mapView.removeOverlay(mapView.overlays[0])
         }
     }
+    
+    func centerMapOnUserLocation() {
+        guard let coordinate = locationManager.location?.coordinate else { return }
+        let region = MKCoordinateRegion(center: coordinate,
+                                        latitudinalMeters: 2000,
+                                        longitudinalMeters: 2000)
+        mapView.setRegion(region, animated: true)
+    }
 }
 
 // MARK: - MKMapViewDelegate
@@ -538,14 +546,19 @@ extension HomeController: RideActionViewDelegate {
     func cancelTrip() {
         print(kDebugHomeController, "Cancelling trip!")
         
-        Service.shared.cancelTrip { (error: Error?, ref: DatabaseReference) in
+        Service.shared.cancelTrip { [weak self] (error: Error?, ref: DatabaseReference) in
             if let error {
-                print(kDebugHomeController, "Error cancelling trip...")
+                print(kDebugHomeController, "Error deleting trip: \(error.localizedDescription)")
                 return
             }
             
-            self.animateRideActionView(shouldShow: false)
-            print(kDebugHomeController, "Successfully! Cancelled Trip!")
+            self?.centerMapOnUserLocation()
+            self?.animateRideActionView(shouldShow: false)
+            self?.removeAnnotationsAndOverlays()
+            
+            let menuImg = UIImage(named: "baseline_menu_black_36dp")?.withRenderingMode(.alwaysOriginal)
+            self?.actionButton.setImage(menuImg, for: .normal)
+            self?.actionButtonConfig = .showMenu
         }
     }
 }
@@ -570,6 +583,8 @@ extension HomeController: PickupControllerDelegate {
             guard let self else { return }
             self.removeAnnotationsAndOverlays()
             self.animateRideActionView(shouldShow: false)
+            self.centerMapOnUserLocation()
+            self.presentAlertController(withTitle: "Oops!",message: "The passenger has decided to cancel this ride. Press OK to continue.")
         }
         
         self.dismiss(animated: true) { [weak self] in
