@@ -37,6 +37,7 @@ struct Service {
         // here, observe method used to listen for data changes at a particular location. This is the primary way to read data from the Firebase Database. Your block will be triggered for the initial data and again whenever the data changes.
         /// if we update coordinates of a driver location in firebase , then this method will be called!
         REF_DRIVER_LOCATIONS.observe(.value) { (snapshot: DataSnapshot)  in
+            print(kDebugService, #function)
             geofire.query(at: location, withRadius: 50).observe(.keyEntered) { (uid: String, location: CLLocation) in
                 fetchUserData(uid: uid) { user in
                     var driver = user
@@ -100,6 +101,13 @@ struct Service {
     func cancelTrip(completion: @escaping(Error?, DatabaseReference) -> Void) {
         guard let uid = Auth.auth().currentUser?.uid else { return }
         REF_TRIPS.child(uid).removeValue(completionBlock: completion)
+    }
+    
+    func updateDriverLocation(location: CLLocation) {
+        print(kDebugService, #function)
+        guard let uid = Auth.auth().currentUser?.uid else { return }
+        let geofire = GeoFire(firebaseRef: REF_DRIVER_LOCATIONS)
+        geofire.setLocation(location, forKey: uid)
     }
 }
 
