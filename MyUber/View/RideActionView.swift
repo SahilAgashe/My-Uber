@@ -59,7 +59,11 @@ class RideActionView: UIView {
         }
     }
     
-    var config = RideActionViewConfiguration()
+    var config = RideActionViewConfiguration() {
+        didSet {
+            configureUI(with: config)
+        }
+    }
     var buttonAction = ButtonAction()
     weak var delegate: RideActionViewDelegate?
     var user: User?
@@ -182,7 +186,7 @@ class RideActionView: UIView {
                             paddingRight: 12, height: 50)
     }
     
-    public func configureUI(with config: RideActionViewConfiguration) {
+    private func configureUI(with config: RideActionViewConfiguration) {
         switch config {
         case .requestRide:
             buttonAction = .requestRide

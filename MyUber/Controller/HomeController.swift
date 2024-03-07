@@ -40,6 +40,7 @@ class HomeController: UIViewController {
     
     private var user: User? {
         didSet {
+            print(kDebugHomeController, "User name is \(user?.fullname ?? "Unable to get user full name!")")
             locationInputView.user = user
             if user?.accountType == .passenger {
                 fetchDrivers()
@@ -321,7 +322,7 @@ class HomeController: UIViewController {
                 rideActionView.user = user
             }
             
-            rideActionView.configureUI(with: config)
+            rideActionView.config = config
         }
     }
     
@@ -431,6 +432,8 @@ extension HomeController: CLLocationManagerDelegate {
     
     func locationManager(_ manager: CLLocationManager, didEnterRegion region: CLRegion) {
         print(kDebugHomeController, #function, "region => \(region)")
+        
+        rideActionView.config = .pickupPassenger
     }
     
     func enableLocationServices() {
@@ -583,7 +586,7 @@ extension HomeController: RideActionViewDelegate {
             self?.actionButton.setImage(menuImg, for: .normal)
             self?.actionButtonConfig = .showMenu
             
-            self?.inputActivationView.alpha = 0
+            self?.inputActivationView.alpha = 1
         }
     }
 }
