@@ -123,14 +123,18 @@ class HomeController: UIViewController {
             switch state {
             case .requested:
                 break
+                
             case .accepted:
-                print(kDebugHomeController, "Trip is accepted! Loading view removed!")
                 self?.shouldPresentLoadingView(false)
+                self?.removeAnnotationsAndOverlays()
+                self?.zoomForActiveTrip(withDriverUid: driverUid)
                 Service.shared.fetchUserData(uid: driverUid) { [weak self] driver in
                     self?.animateRideActionView(shouldShow: true, config: .tripAccepted, user: driver)
                 }
+                
             case .driverArrived:
                 self?.rideActionView.config = .driverArrived
+                
             case .inProgress:
                 break
             case .completed:
@@ -159,6 +163,9 @@ class HomeController: UIViewController {
                     if driverAnnotation.uid == driver.uid {
                         print(kDebugHomeController, "Position updated for driver => \(driver.fullname)")
                         driverAnnotation.updateAnnotationPosition(withCoordinate: coordinate)
+                        if let trip = self?.trip {
+                            self?.zoomForActiveTrip(withDriverUid: driver.uid)
+                        }
                         return true
                     }
                     return false
@@ -399,6 +406,23 @@ private extension HomeController {
         locationManager.startMonitoring(for: region)
         
         print(kDebugHomeController, #function, "region => \(region)")
+    }
+    
+    func zoomForActiveTrip(withDriverUid uid: String) {
+        var annotations = [MKAnnotation]()
+        mapView.annotations.forEach({ (annotation: MKAnnotation) in
+            if let anno = annotation as? DriverAnnotation {
+                if anno.uid == uid {
+                    annotations.append(anno)
+                }
+            }
+            
+            if let userAnno = annotation as? MKUserLocation {
+                annotations.append(userAnno)
+            }
+        })
+        print("DEBUG: Annotations array is \(annotations)")
+        mapView.zoomToFit(annotations: annotations)
     }
 }
 
