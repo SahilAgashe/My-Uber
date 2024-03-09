@@ -41,3 +41,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 }
 
+// MARK: - Highliting techniques (here using MARK)
+// TODO: - Using TODO
+// FIXME: - Using Fixme
+
