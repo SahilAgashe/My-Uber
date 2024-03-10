@@ -146,10 +146,13 @@ class HomeController: UIViewController {
                 print(kDebugHomeController, "Handle arrive at destination!")
                 self?.rideActionView.config = .endTrip
             case .completed:
-                self?.animateRideActionView(shouldShow: false)
-                self?.centerMapOnUserLocation()
-                self?.configureActionButton(config: .showMenu)
-                self?.presentAlertController(withTitle: "Trip Completed", message: "We hope you enjoyed your trip!")
+                Service.shared.deleteTrip { (err: Error?, ref: DatabaseReference) in
+                    self?.animateRideActionView(shouldShow: false)
+                    self?.centerMapOnUserLocation()
+                    self?.configureActionButton(config: .showMenu)
+                    self?.inputActivationView.alpha = 1
+                    self?.presentAlertController(withTitle: "Trip Completed", message: "We hope you enjoyed your trip!")
+                }
             }
         }
     }
@@ -166,6 +169,11 @@ class HomeController: UIViewController {
             let placemark = MKPlacemark(coordinate: trip.destinationCoordinates)
             let mapItem = MKMapItem(placemark: placemark)
             self?.generatePolyline(toDestination: mapItem)
+            
+            if let annotations = self?.mapView.annotations {
+                self?.mapView.zoomToFit(annotations: annotations)
+            }
+            
         }
     }
     
@@ -643,7 +651,7 @@ extension HomeController: RideActionViewDelegate {
     func cancelTrip() {
         print(kDebugHomeController, "Cancelling trip!")
         
-        Service.shared.cancelTrip { [weak self] (error: Error?, ref: DatabaseReference) in
+        Service.shared.deleteTrip { [weak self] (error: Error?, ref: DatabaseReference) in
             if let error {
                 print(kDebugHomeController, "Error deleting trip: \(error.localizedDescription)")
                 return
