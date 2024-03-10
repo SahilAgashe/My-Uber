@@ -146,6 +146,7 @@ class RideActionView: UIView {
             print(kDebugRideActionView, "Handle Get Directions")
         case .pickup:
             print(kDebugRideActionView, "Handle Pickup")
+            // FIXME: - when driver press pickup , should zoom on driver side!
             delegate?.pickupPassenger()
         case .dropOff:
             print(kDebugRideActionView, "Handle Drop Off")
