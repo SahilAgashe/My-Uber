@@ -142,6 +142,9 @@ class HomeController: UIViewController {
                 
             case .inProgress:
                 self?.rideActionView.config = .tripInProgress
+            case .arrivedAtDestination:
+                print(kDebugHomeController, "Handle arrive at destination!")
+                self?.rideActionView.config = .endTrip
             case .completed:
                 break
             }
@@ -479,20 +482,28 @@ extension HomeController: CLLocationManagerDelegate {
     
     func locationManager(_ manager: CLLocationManager, didStartMonitoringFor region: CLRegion) {
         if region.identifier == AnnotationType.pickup.rawValue {
-            print(kDebugHomeController, "Did start monitoring pick-up region \(region)")
+            print(kDebugHomeController, "didStartMonitoringFor pick-up region \(region)")
         }
         
         if region.identifier == AnnotationType.destination.rawValue {
-            print(kDebugHomeController, "Did start monitoring destination region \(region)")
+            print(kDebugHomeController, "didStartMonitoringFor destination region \(region)")
         }
     }
     
     func locationManager(_ manager: CLLocationManager, didEnterRegion region: CLRegion) {
-        print(kDebugHomeController, #function, "region => \(region)")
-        
         guard let trip else { return }
-        Service.shared.updateTripState(trip: trip, state: .driverArrived) { [weak self] err, ref in
-            self?.rideActionView.config = .pickupPassenger
+        if region.identifier == AnnotationType.pickup.rawValue {
+            print(kDebugHomeController, "didEnterRegion pickup region \(region)")
+            Service.shared.updateTripState(trip: trip, state: .driverArrived) { [weak self] err, ref in
+                self?.rideActionView.config = .pickupPassenger
+            }
+        }
+        
+        if region.identifier == AnnotationType.destination.rawValue {
+            print(kDebugHomeController, "didEnterRegion destination region \(region)")
+            Service.shared.updateTripState(trip: trip, state: .arrivedAtDestination) { [weak self] err, ref in
+                self?.rideActionView.config = .endTrip
+            }
         }
     }
     

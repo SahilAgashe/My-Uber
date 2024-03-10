@@ -489,6 +489,9 @@
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "MyUber/Supporting Files/Info.plist";
+				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "Location acess needed.(Always and When)";
+				INFOPLIST_KEY_NSLocationAlwaysUsageDescription = "Location acess needed.(Always)";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Location acess needed.(When)";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
@@ -500,7 +503,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = Sahil.Amrut.Agashe.com.MyUber;
+				PRODUCT_BUNDLE_IDENTIFIER = Sahil.Amrut.Agashe.com.MyUberSAA;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -520,6 +523,9 @@
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "MyUber/Supporting Files/Info.plist";
+				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "Location acess needed.(Always and When)";
+				INFOPLIST_KEY_NSLocationAlwaysUsageDescription = "Location acess needed.(Always)";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Location acess needed.(When)";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
@@ -531,7 +537,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = Sahil.Amrut.Agashe.com.MyUber;
+				PRODUCT_BUNDLE_IDENTIFIER = Sahil.Amrut.Agashe.com.MyUberSAA;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
