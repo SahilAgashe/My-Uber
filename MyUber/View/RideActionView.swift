@@ -12,6 +12,7 @@ protocol RideActionViewDelegate: AnyObject {
     func uploadTrip(_ view: RideActionView)
     func cancelTrip()
     func pickupPassenger() 
+    func dropOffPassenger()
 }
 
 enum RideActionViewConfiguration {
@@ -150,6 +151,7 @@ class RideActionView: UIView {
             delegate?.pickupPassenger()
         case .dropOff:
             print(kDebugRideActionView, "Handle Drop Off")
+            delegate?.dropOffPassenger()
         }
     }
     
