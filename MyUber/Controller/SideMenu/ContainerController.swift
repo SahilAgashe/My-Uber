@@ -38,6 +38,7 @@ class ContainerController: UIViewController {
     private func configureMenuController() {
         addChild(menuController)
         menuController.didMove(toParent: self)
+        menuController.view.frame = view.frame
         view.insertSubview(menuController.view, at: 0)
     }
     

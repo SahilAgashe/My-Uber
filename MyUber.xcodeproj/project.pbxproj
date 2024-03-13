@@ -30,6 +30,7 @@
 		819A91712B7728DF00C69888 /* LoginController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 819A91702B7728DF00C69888 /* LoginController.swift */; };
 		819A91732B77A7C000C69888 /* Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 819A91722B77A7C000C69888 /* Extension.swift */; };
 		81A0C7672B81A88D00AD4478 /* Service.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81A0C7662B81A88D00AD4478 /* Service.swift */; };
+		81A7EBB02BA213E800DE6EEF /* MenuHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81A7EBAF2BA213E800DE6EEF /* MenuHeader.swift */; };
 		81CDAA3D2B84417400A81224 /* DriverAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81CDAA3C2B84417400A81224 /* DriverAnnotation.swift */; };
 		81D99DCB2B8A5CCE00AE9ED2 /* RideActionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81D99DCA2B8A5CCE00AE9ED2 /* RideActionView.swift */; };
 /* End PBXBuildFile section */
@@ -60,6 +61,7 @@
 		819A91702B7728DF00C69888 /* LoginController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginController.swift; sourceTree = "<group>"; };
 		819A91722B77A7C000C69888 /* Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extension.swift; sourceTree = "<group>"; };
 		81A0C7662B81A88D00AD4478 /* Service.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Service.swift; sourceTree = "<group>"; };
+		81A7EBAF2BA213E800DE6EEF /* MenuHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuHeader.swift; sourceTree = "<group>"; };
 		81CDAA3C2B84417400A81224 /* DriverAnnotation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DriverAnnotation.swift; sourceTree = "<group>"; };
 		81D99DCA2B8A5CCE00AE9ED2 /* RideActionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RideActionView.swift; sourceTree = "<group>"; };
 		AFAA71FF601C22CF02E149CA /* Pods-MyUber.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MyUber.debug.xcconfig"; path = "Target Support Files/Pods-MyUber/Pods-MyUber.debug.xcconfig"; sourceTree = "<group>"; };
@@ -194,6 +196,7 @@
 				816D5F122B7FE615004C25A2 /* LocationInputView.swift */,
 				81988BD92B8115F400188EDD /* LocationCell.swift */,
 				81D99DCA2B8A5CCE00AE9ED2 /* RideActionView.swift */,
+				81A7EBAF2BA213E800DE6EEF /* MenuHeader.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -340,6 +343,7 @@
 				810500972B81F86300EA2461 /* User.swift in Sources */,
 				812A66AF2B7B11B000692E85 /* SignUpController.swift in Sources */,
 				8183AFED2B7BD4EF00B7AC57 /* AuthButton.swift in Sources */,
+				81A7EBB02BA213E800DE6EEF /* MenuHeader.swift in Sources */,
 				8183B0282B7BEA2300B7AC57 /* HomeController.swift in Sources */,
 				8145D08D2BA18E4000D0E9C6 /* MenuController.swift in Sources */,
 				81CDAA3D2B84417400A81224 /* DriverAnnotation.swift in Sources */,
