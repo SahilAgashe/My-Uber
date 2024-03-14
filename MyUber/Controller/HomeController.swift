@@ -49,7 +49,7 @@ class HomeController: UIViewController {
     
     weak var delegate: HomeControllerDelegate?
     
-    private var user: User? {
+    var user: User? {
         didSet {
             print(kDebugHomeController, "User name is \(user?.fullname ?? "Unable to get user full name!")")
             locationInputView.user = user
@@ -233,13 +233,6 @@ class HomeController: UIViewController {
     
     // MARK: - Shared API
     
-    private func fetchUserData() {
-        guard let currentUid = Auth.auth().currentUser?.uid else { return }
-        Service.shared.fetchUserData(uid: currentUid) { [weak self] user in
-            self?.user = user
-        }
-    }
-    
     private func checkIfUserIsLoggedIn() {
         if Auth.auth().currentUser?.uid == nil {
             print("\(kDebugHomeController): current thread is \(Thread.isMainThread)")
@@ -273,9 +266,6 @@ class HomeController: UIViewController {
     
     public func configure() {
         configureUI()
-        DispatchQueue.global(qos: .background).async { [weak self] in
-            self?.fetchUserData()
-        }
     }
     
     private func configureUI() {

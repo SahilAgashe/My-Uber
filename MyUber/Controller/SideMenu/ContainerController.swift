@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Firebase
 
 private let kDebugContainerController = "DEBUG ContainerController"
 class ContainerController: UIViewController {
@@ -16,15 +17,34 @@ class ContainerController: UIViewController {
     private let menuController = MenuController()
     private var isExpanded = false
     
+    private var user: User? {
+        didSet {
+            guard let user else { return }
+            homeController.user = user
+            configureMenuController(withUser: user)
+        }
+    }
+    
     // MARK: - Lifecycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
         configureHomeController()
-        configureMenuController()
+        DispatchQueue.global(qos: .background).async { [weak self] in
+            self?.fetchUserData()
+        }
     }
     
     // MARK: - Selectors
+    
+    // MARK: - API
+    
+    private func fetchUserData() {
+        guard let currentUid = Auth.auth().currentUser?.uid else { return }
+        Service.shared.fetchUserData(uid: currentUid) { [weak self] user in
+            self?.user = user
+        }
+    }
     
     // MARK: - Helpers
     
@@ -35,11 +55,12 @@ class ContainerController: UIViewController {
         homeController.delegate = self
     }
     
-    private func configureMenuController() {
+    private func configureMenuController(withUser user: User) {
         addChild(menuController)
         menuController.didMove(toParent: self)
         menuController.view.frame = view.frame
         view.insertSubview(menuController.view, at: 0)
+        menuController.user = user
     }
     
     private func animateMenu(shouldExpand: Bool) {

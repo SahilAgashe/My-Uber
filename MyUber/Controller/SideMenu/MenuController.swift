@@ -12,6 +12,13 @@ class MenuController: UITableViewController {
     
     // MARK: - Properties
     
+    var user: User? {
+        didSet {
+            guard let user else { return }
+            menuHeader.user = user
+        }
+    }
+    
     private lazy var menuHeader: MenuHeader = {
         var frame = CGRect(origin: .zero, size: .zero)
         frame.size.height = 140
