@@ -11,12 +11,14 @@ class MenuHeader: UIView {
     
     // MARK: - Properties
     
-    var user: User? {
-        didSet {
-            fullnameLabel.text = user?.fullname
-            emailLabel.text = user?.email
-        }
-    }
+//    var user: User? {
+//        didSet {
+//            fullnameLabel.text = user?.fullname
+//            emailLabel.text = user?.email
+//        }
+//    }
+    
+    private let user: User
     
     private let profileImageView: UIImageView = {
         let iv = UIImageView()
@@ -24,33 +26,34 @@ class MenuHeader: UIView {
         return iv
     }()
     
-    private let fullnameLabel: UILabel = {
+    private lazy var fullnameLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 16)
         label.textColor = .white
-        label.text = "Sahil Agashe"
+        label.text = user.fullname
         return label
     }()
     
-    private let emailLabel: UILabel = {
+    private lazy var emailLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 14)
         label.textColor = .lightGray
-        label.text = "test@gmail.com"
+        label.text = user.email
         return label
     }()
     
     // MARK: - Init
     
-    override init(frame: CGRect) {
+    init(user: User, frame: CGRect) {
+        self.user = user
         super.init(frame: frame)
         configureUI()
     }
     
     required init?(coder: NSCoder) {
-        super.init(coder: coder)
-        configureUI()
+        fatalError("init(coder:) has not been implemented")
     }
+    
     
     // MARK: - Selectors
     

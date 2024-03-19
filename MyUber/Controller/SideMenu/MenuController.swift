@@ -12,25 +12,30 @@ class MenuController: UITableViewController {
     
     // MARK: - Properties
     
-    var user: User? {
-        didSet {
-            guard let user else { return }
-            menuHeader.user = user
-        }
-    }
+    private let user: User
     
     private lazy var menuHeader: MenuHeader = {
         var frame = CGRect(origin: .zero, size: .zero)
         frame.size.height = 140
-        let view = MenuHeader(frame: frame)
+        let view = MenuHeader(user: user, frame: frame)
         return view
     }()
+    
+    // MARK: - Init
+    
+    init(user: User) {
+        self.user = user
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     // MARK: - Lifecycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        //tableView.backgroundColor = .white
         configureTableView()
     }
     
