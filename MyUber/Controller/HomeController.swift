@@ -248,20 +248,6 @@ class HomeController: UIViewController {
         }
     }
     
-    private func signOut() {
-        do {
-            try Auth.auth().signOut()
-            DispatchQueue.main.async { [weak self] in
-                let nav = UINavigationController(rootViewController: LoginController())
-                nav.modalPresentationStyle = .fullScreen
-                nav.modalTransitionStyle = .flipHorizontal
-                self?.present(nav, animated: true)
-            }
-        } catch {
-            print("\(kDebugHomeController): Error while signing out!")
-        }
-    }
-    
     // MARK: - Helpers
     
     public func configure() {

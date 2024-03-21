@@ -9,7 +9,7 @@ import UIKit
 
 private let reuseIdentifier = "MenuCell"
 
-private enum MenuOption: Int, CaseIterable, CustomStringConvertible {
+enum MenuOption: Int, CaseIterable, CustomStringConvertible {
     
     case yourTrips
     case settings
@@ -24,11 +24,16 @@ private enum MenuOption: Int, CaseIterable, CustomStringConvertible {
     }
 }
 
+protocol MenuControllerDelegate: AnyObject {
+    func didSelect(option: MenuOption)
+}
+
 class MenuController: UITableViewController {
     
     // MARK: - Properties
     
     private let user: User
+    weak var delegate: MenuControllerDelegate?
     
     private lazy var menuHeader: MenuHeader = {
         var frame = CGRect(origin: .zero, size: .zero)
@@ -69,6 +74,8 @@ class MenuController: UITableViewController {
     
 }
 
+// MARK: - UITableViewDataSource
+
 extension MenuController {
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         MenuOption.allCases.count
@@ -81,5 +88,14 @@ extension MenuController {
         cell.textLabel?.text = option.description
         
         return cell
+    }
+}
+
+// MARK: - UITableViewDelegate
+
+extension MenuController {
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        guard let option = MenuOption(rawValue: indexPath.row) else { return }
+        delegate?.didSelect(option: option)
     }
 }

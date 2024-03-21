@@ -46,6 +46,20 @@ class ContainerController: UIViewController {
         }
     }
     
+    private func signOut() {
+        do {
+            try Auth.auth().signOut()
+            DispatchQueue.main.async { [weak self] in
+                let nav = UINavigationController(rootViewController: LoginController())
+                nav.modalPresentationStyle = .fullScreen
+                nav.modalTransitionStyle = .flipHorizontal
+                self?.present(nav, animated: true)
+            }
+        } catch {
+            print("\(kDebugContainerController): Error while signing out!")
+        }
+    }
+    
     // MARK: - Helpers
     
     private func configureHomeController() {
@@ -61,26 +75,52 @@ class ContainerController: UIViewController {
         menuController.didMove(toParent: self)
         menuController.view.frame = view.frame
         view.insertSubview(menuController.view, at: 0)
+        menuController.delegate = self
     }
     
-    private func animateMenu(shouldExpand: Bool) {
+    private func animateMenu(shouldExpand: Bool, completion: ((Bool) -> Void)? = nil) {
         if shouldExpand {
-            UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 0.8, initialSpringVelocity: 0, options: .curveEaseInOut) {
+            UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 0.8, initialSpringVelocity: 0, options: .curveEaseInOut, animations: {
                 self.homeController.view.frame.origin.x = self.view.frame.width - 80
-            }
+            }, completion: nil)
         } else {
-            UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 0.8, initialSpringVelocity: 0, options: .curveEaseInOut) {
+            UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 0.8, initialSpringVelocity: 0, options: .curveEaseInOut, animations: {
                 self.homeController.view.frame.origin.x = 0
-            }
+            }, completion: completion)
         }
     }
 }
 
 // MARK: - HomeControllerDelegate
+
 extension ContainerController: HomeControllerDelegate {
     func handleMenuToggle() {
         print(kDebugContainerController, #function)
         isExpanded.toggle()
         animateMenu(shouldExpand: isExpanded)
+    }
+}
+
+// MARK: - MenuControllerDelegate
+
+extension ContainerController: MenuControllerDelegate {
+    func didSelect(option: MenuOption) {
+        isExpanded.toggle()
+        animateMenu(shouldExpand: isExpanded) { [weak self] _ in
+            switch option {
+            case .yourTrips: break
+            case .settings: break
+            case .logout:
+                let alert = UIAlertController(title: nil, message: "Are you sure you want to logout?", preferredStyle: .actionSheet)
+                
+                alert.addAction(UIAlertAction(title: "Log Out", style: .destructive, handler: { _ in
+                    self?.signOut()
+                }))
+                
+                alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+                
+                self?.show(alert, sender: self)
+            }
+        }
     }
 }
