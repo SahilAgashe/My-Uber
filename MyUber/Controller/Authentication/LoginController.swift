@@ -99,10 +99,10 @@ class LoginController: UIViewController {
             /// let homeControllerWithDeprecatedMethod = UIApplication.shared.keyWindow?.rootViewController as? HomeController
             
             /// Note:- last scene-key-window is main keyWindow
-            let homeController = UIApplication.shared.connectedScenes
+            let containerController = UIApplication.shared.connectedScenes
                 .compactMap({ ($0 as? UIWindowScene)?.keyWindow })
-                .last?.rootViewController as? HomeController
-            homeController?.configure()
+                .last?.rootViewController as? ContainerController
+            containerController?.configure()
             self?.dismiss(animated: true)
         }
         

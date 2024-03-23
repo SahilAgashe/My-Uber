@@ -91,8 +91,8 @@ class HomeController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        checkIfUserIsLoggedIn()
         enableLocationServices()
+        configureUI()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -229,23 +229,6 @@ class HomeController: UIViewController {
             self.presentAlertController(withTitle: "Oops!",message: "The passenger has decided to cancel this ride. Press OK to continue.")
         }
 
-    }
-    
-    // MARK: - Shared API
-    
-    private func checkIfUserIsLoggedIn() {
-        if Auth.auth().currentUser?.uid == nil {
-            print("\(kDebugHomeController): current thread is \(Thread.isMainThread)")
-            DispatchQueue.main.async { [weak self] in
-                let nav = UINavigationController(rootViewController: LoginController())
-                nav.modalPresentationStyle = .fullScreen
-                nav.modalTransitionStyle = .flipHorizontal
-                self?.present(nav, animated: true)
-            }
-        } else {
-            print("\(kDebugHomeController): Logged User UID => \(Auth.auth().currentUser?.uid ?? "")")
-            configure()
-        }
     }
     
     // MARK: - Helpers
