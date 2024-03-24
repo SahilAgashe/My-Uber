@@ -45,6 +45,7 @@ class ContainerController: UIViewController {
     // MARK: - Selectors
     
     @objc private func dismissMenu() {
+        print(kDebugContainerController, #function)
         isExpanded = false
         animateMenu(shouldExpand: isExpanded)
     }
@@ -114,7 +115,7 @@ class ContainerController: UIViewController {
     }
     
     private func configureBlackView() {
-        blackView.frame = view.bounds
+        blackView.frame = CGRect(x: xOrigin, y: 0, width: 80, height: self.view.frame.height)
         blackView.backgroundColor = UIColor(white: 0, alpha: 0.5)
         blackView.alpha = 0
         view.addSubview(blackView)
@@ -129,7 +130,6 @@ class ContainerController: UIViewController {
                 guard let self else { return }
                 self.homeController.view.frame.origin.x = xOrigin
                 self.blackView.alpha = 1
-                self.blackView.frame = CGRect(x: xOrigin, y: 0, width: 80, height: self.view.frame.height)
             })
         } else {
             self.blackView.alpha = 0
