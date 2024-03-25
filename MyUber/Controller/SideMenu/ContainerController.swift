@@ -167,7 +167,13 @@ extension ContainerController: MenuControllerDelegate {
         animateMenu(shouldExpand: isExpanded) { [weak self] _ in
             switch option {
             case .yourTrips: break
-            case .settings: break
+            case .settings:
+                guard let user = self?.user else { return }
+                let controller = SettingsController(user: user)
+                let nav = UINavigationController(rootViewController: controller)
+                guard let self else { return }
+                nav.modalPresentationStyle = .fullScreen
+                show(nav, sender: self)
             case .logout:
                 let alert = UIAlertController(title: nil, message: "Are you sure you want to logout?", preferredStyle: .actionSheet)
                 
