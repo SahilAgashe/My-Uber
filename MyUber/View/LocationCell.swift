@@ -20,7 +20,14 @@ class LocationCell: UITableViewCell {
         }
     }
     
-    private let titleLabel: UILabel = {
+    var type: LocationType? {
+        didSet {
+            titleLabel.text = type?.description
+            addressLabel.text = type?.subtitle
+        }
+    }
+    
+    let titleLabel: UILabel = {
         let label = UILabel()
         label.text = "Vinoba Nagar, Tumsar, Bhandara"
         label.font = .systemFont(ofSize: 14)
