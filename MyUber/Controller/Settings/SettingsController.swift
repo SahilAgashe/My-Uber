@@ -33,6 +33,7 @@ class SettingsController: UITableViewController {
     // MARK: -  Properties
     
     private let user: User
+    private let locationManager = LocationHandler.shared.locationManager
     
     private lazy var infoHeader: UserInfoHeader = {
         let view = UserInfoHeader(user: user, frame: .zero)
@@ -127,10 +128,10 @@ extension SettingsController {
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        guard let type = LocationType(rawValue: indexPath.row) else { return }
-        switch type {
-        case .home: print("home")
-        case .work: print("work")
-        }
+        guard let type = LocationType(rawValue: indexPath.row),
+              let location = locationManager.location else { return }
+        let controller = AddLocationController(type: type, location: location)
+        let nav = UINavigationController(rootViewController: controller)
+        show(nav, sender: true)
     }
 }
