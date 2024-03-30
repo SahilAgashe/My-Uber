@@ -17,7 +17,9 @@ class AddLocationController: UITableViewController {
     
     private let searchBar = UISearchBar()
     private let searchCompleter = MKLocalSearchCompleter()
-    private var searchResults = [MKLocalSearchCompletion]()
+    private var searchResults = [MKLocalSearchCompletion]() {
+        didSet { tableView.reloadData() }
+    }
     
     private let type: LocationType
     private let location: CLLocation
@@ -50,7 +52,7 @@ class AddLocationController: UITableViewController {
     // MARK: - Helpers
     
     private func configureTableView() {
-        tableView.backgroundColor = .cyan
+        tableView.backgroundColor = .white
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: reuseIdentifier)
         tableView.rowHeight = 60
         tableView.addShadow()
@@ -78,6 +80,13 @@ extension AddLocationController {
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = UITableViewCell(style: .default, reuseIdentifier: reuseIdentifier)
+        let result = searchResults[indexPath.row]
+        
+        var contentConfig = cell.defaultContentConfiguration()
+        contentConfig.text = result.title
+        contentConfig.secondaryText = result.subtitle
+        cell.contentConfiguration = contentConfig
+        
         return cell
     }
 }
@@ -85,9 +94,18 @@ extension AddLocationController {
 // MARK: - UISearchBarDelegate
 extension AddLocationController: UISearchBarDelegate {
     
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        // whenever searchCompleter.queryFragment updates , it will call completerDidUpdateResults(_:)
+        searchCompleter.queryFragment = searchText
+    }
+    
+    
 }
 
-// MARK: -
+// MARK: - MKLocalSearchCompleterDelegate
 extension AddLocationController: MKLocalSearchCompleterDelegate {
     
+    func completerDidUpdateResults(_ completer: MKLocalSearchCompleter) {
+        searchResults = completer.results
+    }
 }
