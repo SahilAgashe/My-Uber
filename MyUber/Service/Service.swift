@@ -117,6 +117,12 @@ struct PassengerService {
         REF_TRIPS.child(uid).removeValue(completionBlock: completion)
     }
     
+    func saveLocation(locationString: String, type: LocationType, completion: @escaping(Error?, DatabaseReference) -> Void) {
+        guard let uid = Auth.auth().currentUser?.uid else { return }
+        let key = (type == .home) ? "homeLocation" : "workLocation"
+        REF_USERS.child(uid).child(key).setValue(locationString, withCompletionBlock: completion)
+    }
+    
 }
 
 

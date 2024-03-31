@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import FirebaseDatabase
 
 private let reuseIdentifier = "LocationCell"
 
@@ -131,7 +132,18 @@ extension SettingsController {
         guard let type = LocationType(rawValue: indexPath.row),
               let location = locationManager.location else { return }
         let controller = AddLocationController(type: type, location: location)
+        controller.delegate = self
         let nav = UINavigationController(rootViewController: controller)
         show(nav, sender: true)
     }
+}
+
+extension SettingsController: AddLocationControllerDelegate {
+    func updateLocation(locationString: String, type: LocationType) {
+        PassengerService.shared.saveLocation(locationString: locationString, type: type) { (err: Error?, ref: DatabaseReference) in
+            self.dismiss(animated: true)
+        }
+    }
+    
+    
 }

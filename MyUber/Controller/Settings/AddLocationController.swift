@@ -10,10 +10,16 @@ import MapKit
 
 private let reuseIdentifier = "Cell"
 
+protocol AddLocationControllerDelegate: AnyObject {
+    func updateLocation(locationString: String, type: LocationType)
+}
+
 private let kDebugAddLocationController = "DEBUG AddLocationController"
 class AddLocationController: UITableViewController {
     
     // MARK: - Properties
+    
+    weak var delegate: AddLocationControllerDelegate?
     
     private let searchBar = UISearchBar()
     private let searchCompleter = MKLocalSearchCompleter()
@@ -88,6 +94,17 @@ extension AddLocationController {
         cell.contentConfiguration = contentConfig
         
         return cell
+    }
+}
+
+// MARK: - UITableViewDelegate
+extension AddLocationController {
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let result = searchResults[indexPath.row]
+        let title = result.title
+        let subtitle = result.subtitle
+        let locationString = title + " " + subtitle
+        delegate?.updateLocation(locationString: locationString, type: type)
     }
 }
 
