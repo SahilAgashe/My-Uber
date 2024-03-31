@@ -24,6 +24,7 @@ class ContainerController: UIViewController {
             guard let user else { return }
             homeController.user = user
             configureMenuController(withUser: user)
+            print(kDebugContainerController, "user homelocation => \(user.homeLocation ?? ""), user worklocation => \(user.workLocation ?? "")")
         }
     }
     
@@ -159,6 +160,14 @@ extension ContainerController: HomeControllerDelegate {
     }
 }
 
+// MARK: - SettingsControllerDelegate
+
+extension ContainerController: SettingsControllerDelegate {
+    func updateUser(_ controller: SettingsController) {
+        user = controller.user
+    }
+}
+
 // MARK: - MenuControllerDelegate
 
 extension ContainerController: MenuControllerDelegate {
@@ -170,6 +179,7 @@ extension ContainerController: MenuControllerDelegate {
             case .settings:
                 guard let user = self?.user else { return }
                 let controller = SettingsController(user: user)
+                controller.delegate = self
                 let nav = UINavigationController(rootViewController: controller)
                 guard let self else { return }
                 nav.modalPresentationStyle = .fullScreen
