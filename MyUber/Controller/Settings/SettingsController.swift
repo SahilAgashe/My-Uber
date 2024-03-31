@@ -33,7 +33,7 @@ class SettingsController: UITableViewController {
     
     // MARK: -  Properties
     
-    private let user: User
+    private var user: User
     private let locationManager = LocationHandler.shared.locationManager
     
     private lazy var infoHeader: UserInfoHeader = {
@@ -88,6 +88,13 @@ class SettingsController: UITableViewController {
         navigationItem.title = "Settings"
         navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(named: "baseline_clear_white_36pt_2x")?.withRenderingMode(.alwaysOriginal), style: .plain, target: self, action: #selector(handleDismissal))
     }
+    
+    private func locationText(for type: LocationType) -> String {
+        switch type {
+        case .home: user.homeLocation ?? type.subtitle
+        case .work: user.workLocation ?? type.subtitle
+        }
+    }
 }
 
 // MARK: - UITableViewDataSource
@@ -102,7 +109,8 @@ extension SettingsController {
         else  { return UITableViewCell() }
         
         guard let type = LocationType(rawValue: indexPath.row) else { return cell }
-        cell.type = type
+        cell.titleLabel.text = type.description
+        cell.addressLabel.text = locationText(for: type)
         return cell
     }
 }
@@ -139,11 +147,18 @@ extension SettingsController {
 }
 
 extension SettingsController: AddLocationControllerDelegate {
+    
     func updateLocation(locationString: String, type: LocationType) {
-        PassengerService.shared.saveLocation(locationString: locationString, type: type) { (err: Error?, ref: DatabaseReference) in
-            self.dismiss(animated: true)
+        PassengerService.shared.saveLocation(locationString: locationString, type: type) { [weak self] (err: Error?, ref: DatabaseReference) in
+            self?.dismiss(animated: true)
+            
+            switch type {
+            case .home: self?.user.homeLocation = locationString
+            case .work: self?.user.workLocation = locationString
+            }
+            
+            self?.tableView.reloadData()
         }
     }
-    
     
 }

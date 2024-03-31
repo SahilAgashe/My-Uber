@@ -18,6 +18,8 @@ struct User {
     let email: String
     var accountType: AccountType!
     var location: CLLocation?
+    var homeLocation: String?
+    var workLocation: String?
 }
 
 
@@ -29,6 +31,14 @@ extension User {
         
         if let index = dictionary["accountType"] as? Int {
             accountType = AccountType(rawValue: index)
+        }
+        
+        if let home = dictionary["homeLocation"] as? String {
+            homeLocation = home
+        }
+        
+        if let work = dictionary["workLocation"] as? String {
+            workLocation = work
         }
     }
 }
