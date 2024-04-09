@@ -20,6 +20,10 @@ struct User {
     var location: CLLocation?
     var homeLocation: String?
     var workLocation: String?
+    
+    var firstInitial: String {
+        String(fullname.prefix(1))
+    }
 }
 
 
